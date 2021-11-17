@@ -8,7 +8,7 @@ export const isDevelopmentEnvironment = process.env.NODE_ENV === EnvironmentType
 export const isTestEnvironment = process.env.NODE_ENV === EnvironmentType.TEST
 
 /**
- * Reads from different env files accordingly to current environment
+ * Reads from different env files accordingly to current environment.
  */
 const fileName = (() => {
   if (isProductionEnvironment) return '.env'
