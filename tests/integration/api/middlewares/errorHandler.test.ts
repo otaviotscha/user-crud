@@ -5,9 +5,8 @@ import { startServer, closeServer, runningServer as server } from 'tests/helpers
 describe('MIDDLEWARES: Error Handler', () => {
   beforeAll(startServer)
 
-  test('should return status code 404', async () => {
-    const getResponse = await request(server).get(`/foo`)
-    expect(getResponse.statusCode).toBe(404)
+  test('should return status code 404', done => {
+    request(server).get(`/foo`).expect(404, done)
   })
 
   test('should return status code 400', async () => {
