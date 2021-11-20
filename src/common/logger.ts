@@ -8,6 +8,9 @@ import { consoleOptions } from '~/config/logger'
  * Log transports.
  */
 const transportsLogger =
+  /**
+   * TODO: add production transports
+   */
   NODE_ENV === EnvironmentType.PRODUCTION ? [new transports.Console(consoleOptions)] : [new transports.Console(consoleOptions)]
 
 /**
