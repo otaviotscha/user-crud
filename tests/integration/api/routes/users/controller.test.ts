@@ -20,7 +20,7 @@ describe('ROUTES: Users', () => {
   beforeEach(cleanDatabase)
 
   test('should bring all existing users', async () => {
-    await new UserBuilder().save()
+    await new UserBuilder().setEmail('jane.doe@email.com').save()
     await new UserBuilder().save()
     const response = await request(server).get(`/users`)
 
