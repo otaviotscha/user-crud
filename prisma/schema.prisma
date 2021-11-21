@@ -20,4 +20,20 @@ model User {
   lastName  String
   age       Int
   email     String? @unique
+
+  Address Address[]
+}
+
+model Address {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  number Int
+  street String
+  city   String
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }
