@@ -9,17 +9,7 @@ export const cleanDatabase = async () => {
   const modelKeys = Prisma.dmmf.datamodel.models.map(model => model.name)
 
   for (const table of modelKeys) {
-    /**
-     * Disables foreign key verification.
-     */
-    await prisma.$executeRawUnsafe(`ALTER TABLE "${table}" DISABLE TRIGGER ALL`)
-
-    await prisma.$executeRawUnsafe(`TRUNCATE "${table}"`)
-
-    /**
-     * Enables foreign key verification.
-     */
-    await prisma.$executeRawUnsafe(`ALTER TABLE "${table}" ENABLE TRIGGER ALL`)
+    await prisma.$executeRawUnsafe(`TRUNCATE "${table}" CASCADE`)
   }
 }
 
