@@ -1,7 +1,7 @@
 import { prisma } from '~/common/database'
 import { logThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
-import { UserCreationData } from './@types/User'
+import { CreateUserBody } from './@types/createUser'
 
 /**
  * Finds users accordingly to data received.
@@ -43,7 +43,7 @@ export const findOne = async (id: string) => {
 /**
  * Creates a new user.
  */
-export const create = async (data: UserCreationData) => {
+export const create = async (data: CreateUserBody) => {
   try {
     logger.info('=== User:create ===')
 
@@ -66,7 +66,7 @@ export const create = async (data: UserCreationData) => {
 /**
  * Updates an existing user.
  */
-export const update = async (id: string, data: UserCreationData) => {
+export const update = async (id: string, data: CreateUserBody) => {
   try {
     logger.info('=== User:update ===')
 

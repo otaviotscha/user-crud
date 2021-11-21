@@ -1,8 +1,9 @@
 import 'reflect-metadata'
 
 import path from 'path'
-import { Server } from 'http'
-import { createExpressServer } from 'routing-controllers'
+import { Express } from 'express'
+import { createExpressServer, RoutingControllersOptions } from 'routing-controllers'
+import { loadDocRoutes } from './api/docs/openAPI'
 
 /**
  * Loading controllers.
@@ -15,15 +16,21 @@ const controllersPath = path.resolve(__dirname, 'api', 'routes', '**', 'controll
 const middlewaresPath = path.resolve(__dirname, 'api', 'middlewares', '**', '*.ts')
 
 /**
- * Creating server.
+ * Server options.
  */
-const app: Server = createExpressServer({
+export const serverOptions: RoutingControllersOptions = {
   cors: '*',
   defaultErrorHandler: false,
   controllers: [controllersPath],
   middlewares: [middlewaresPath]
-})
+}
+
+/**
+ * Creating server.
+ */
+const app: Express = createExpressServer(serverOptions)
 
 export const server = async () => {
+  loadDocRoutes(app)
   return app
 }

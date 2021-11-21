@@ -10,7 +10,6 @@ import { startServer, server, closeServer } from 'helpers/server'
  * Builders.
  */
 import { UserBuilder } from '~/builders/user'
-import { UserUpdateData } from '~/api/routes/users/@types/User'
 import { prisma } from '~/common/database'
 
 /**
@@ -74,7 +73,7 @@ describe('ROUTES: Users', () => {
 
   test('should update an existing user', async () => {
     const { id } = await new UserBuilder().save()
-    const toUpdate: UserUpdateData = {
+    const toUpdate = {
       username: 'jane.doe',
       password: '654321',
       firstName: 'Jane',
