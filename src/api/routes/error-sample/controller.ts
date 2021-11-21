@@ -1,9 +1,10 @@
-import { Get, JsonController, OnUndefined } from 'routing-controllers'
+import { Get, HttpCode, JsonController, OnUndefined } from 'routing-controllers'
 
 @JsonController('/error-sample')
 export class ErrorSampleController {
   @Get('/')
-  @OnUndefined(204)
+  @HttpCode(400)
+  @OnUndefined(400)
   getAll() {
     throw new Error('This is an example of error message')
   }

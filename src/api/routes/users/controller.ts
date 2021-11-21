@@ -21,6 +21,7 @@ export class UsersController {
   @Get('/')
   @OpenAPI({ summary: 'Returns all users' })
   @ResponseSchema(GetUserResponse, { isArray: true })
+  @HttpCode(200)
   @OnUndefined(204)
   getAll() {
     return userService.findMany()
@@ -29,6 +30,7 @@ export class UsersController {
   @Get('/:id')
   @OpenAPI({ summary: 'Returns an user' })
   @ResponseSchema(GetUserResponse)
+  @HttpCode(200)
   @OnUndefined(500)
   getOne(@Param('id') id: string) {
     return userService.findOne(id)
@@ -54,6 +56,7 @@ export class UsersController {
 
   @Delete('/:id')
   @OpenAPI({ summary: 'Deletes an user' })
+  @HttpCode(200)
   @OnUndefined(204)
   remove(@Param('id') id: string) {
     return userService.remove(id)
