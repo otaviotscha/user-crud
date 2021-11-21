@@ -18,11 +18,11 @@ import * as userService from './service'
  */
 @JsonController('/users')
 export class UsersController {
-  @Get('/')
+  @Get()
   @OpenAPI({ summary: 'Returns all users' })
   @ResponseSchema(GetUserResponse, { isArray: true })
   @HttpCode(200)
-  @OnUndefined(204)
+  @OnUndefined(404)
   getAll() {
     return userService.findMany()
   }
@@ -31,16 +31,16 @@ export class UsersController {
   @OpenAPI({ summary: 'Returns an user' })
   @ResponseSchema(GetUserResponse)
   @HttpCode(200)
-  @OnUndefined(500)
+  @OnUndefined(404)
   getOne(@Param('id') id: string) {
     return userService.findOne(id)
   }
 
-  @Post('/')
+  @Post()
   @OpenAPI({ summary: 'Creates an user' })
   @ResponseSchema(CreateUserResponse)
   @HttpCode(201)
-  @OnUndefined(500)
+  @OnUndefined(400)
   post(@Body() users: CreateUserBody) {
     return userService.create(users)
   }
@@ -49,14 +49,14 @@ export class UsersController {
   @OpenAPI({ summary: 'Updates an user' })
   @ResponseSchema(UpdateUserResponse)
   @HttpCode(200)
-  @OnUndefined(204)
+  @OnUndefined(400)
   put(@Param('id') id: string, @Body() data: UpdateUserBody) {
     return userService.update(id, data)
   }
 
   @Delete('/:id')
   @OpenAPI({ summary: 'Deletes an user' })
-  @HttpCode(200)
+  @HttpCode(204)
   @OnUndefined(204)
   remove(@Param('id') id: string) {
     return userService.remove(id)

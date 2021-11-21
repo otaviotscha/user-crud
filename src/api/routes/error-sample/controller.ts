@@ -2,7 +2,7 @@ import { Get, HttpCode, JsonController, OnUndefined } from 'routing-controllers'
 
 @JsonController('/error-sample')
 export class ErrorSampleController {
-  @Get('/')
+  @Get()
   @HttpCode(400)
   @OnUndefined(400)
   getAll() {

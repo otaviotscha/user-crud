@@ -22,11 +22,11 @@ describe('ROUTES: Users', () => {
   test('should bring all existing users', async () => {
     await new UserBuilder().save()
     await new UserBuilder().save()
-    const foundUsers = await request(server).get('/users')
+    const response = await request(server).get(`/users`)
 
-    expect(foundUsers.status).toBe(200)
-    expect(foundUsers.body).toHaveLength(2)
-    expect(foundUsers.body).toEqual(
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveLength(2)
+    expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           id: expect.any(String),
@@ -43,10 +43,10 @@ describe('ROUTES: Users', () => {
 
   test('should bring one existing users', async () => {
     const { id } = await new UserBuilder().save()
-    const foundUser = await request(server).get(`/users/${id}`)
+    const response = await request(server).get(`/users/${id}`)
 
-    expect(foundUser.status).toBe(200)
-    expect(foundUser.body).toEqual(
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual(
       expect.objectContaining({
         id: expect.any(String),
         username: expect.any(String),
@@ -101,6 +101,26 @@ describe('ROUTES: Users', () => {
     expect(response.status).toBe(204)
     expect(countBeforeDelete).toBe(2)
     expect(countAfterDelete).toBe(1)
+  })
+
+  test('should return status code 404 trying to find users', async () => {
+    const response = await request(server).get('/users')
+
+    expect(response.status).toBe(404)
+    expect(response.body).toEqual({
+      code: 404,
+      message: expect.any(String)
+    })
+  })
+
+  test('should return status code 404 trying to find one users', async () => {
+    const response = await request(server).get(`/users/c142a3e1-e9de-48a1-bf55-08f623bd57ce`)
+
+    expect(response.status).toBe(404)
+    expect(response.body).toEqual({
+      code: 404,
+      message: expect.any(String)
+    })
   })
 
   afterAll(closeServer)

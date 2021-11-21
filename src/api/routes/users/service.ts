@@ -1,3 +1,5 @@
+import { NotFoundError } from 'routing-controllers'
+
 import { prisma } from '~/common/database'
 import { logThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
@@ -12,11 +14,12 @@ export const findMany = async () => {
 
     logger.info(`Searching all users`)
     const foundUsers = await prisma.user.findMany()
+    if (foundUsers.length === 0) throw new NotFoundError(`No user was found`)
     logger.info(`Found "${foundUsers.length}" users.`)
 
     return foundUsers
-  } catch ({ message }) {
-    logThrownError(message)
+  } catch (error) {
+    logThrownError(error)
   } finally {
     logger.info('=== /User:findMany ===')
 
@@ -31,8 +34,8 @@ export const findOne = async (id: string) => {
   try {
     logger.info('=== User:findOne ===')
     return findById(id)
-  } catch ({ message }) {
-    logThrownError(message)
+  } catch (error) {
+    logThrownError(error)
   } finally {
     logger.info('=== /User:findMany ===')
 
@@ -54,8 +57,8 @@ export const create = async (data: CreateUserBody) => {
     logger.info(`User "${id}" was successfully created`)
 
     return { id, createdAt }
-  } catch ({ message }) {
-    logThrownError(message)
+  } catch (error) {
+    logThrownError(error)
   } finally {
     logger.info('=== /User:create ===')
 
@@ -80,8 +83,8 @@ export const update = async (id: string, data: CreateUserBody) => {
 
     logger.info(`User ${id} successfully updated`)
     return { id, updatedAt }
-  } catch ({ message }) {
-    logThrownError(message)
+  } catch (error) {
+    logThrownError(error)
   } finally {
     logger.info('=== /User:update ===')
 
@@ -101,8 +104,8 @@ export const remove = async (id: string) => {
     logger.info(`Deleting user "${id}"`)
     await prisma.user.delete({ where: { id } })
     logger.info(`User "${id}" successfully deleted`)
-  } catch ({ message }) {
-    logThrownError(message)
+  } catch (error) {
+    logThrownError(error)
   } finally {
     logger.info('=== /User:remove ===')
 
@@ -118,6 +121,6 @@ export const findById = async (id: string) => {
   const foundUser = await prisma.user.findFirst({
     where: { id }
   })
-  if (!foundUser) throw new Error(`User ${id} was not found`)
+  if (!foundUser) throw new NotFoundError(`User ${id} was not found`)
   return foundUser
 }
