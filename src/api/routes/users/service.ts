@@ -15,7 +15,7 @@ export const findMany = async () => {
     logger.info(`Searching all users`)
     const foundUsers = await prisma.user.findMany()
     if (foundUsers.length === 0) throw new NotFoundError(`No user was found`)
-    logger.info(`Found "${foundUsers.length}" users.`)
+    logger.info(`Found "${foundUsers.length}" users`)
 
     return foundUsers
   } catch (error) {
