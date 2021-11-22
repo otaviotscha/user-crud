@@ -1,6 +1,3 @@
-/**
- * Helpers.
- */
 import { prisma } from '~/common/database'
 
 /**
@@ -44,6 +41,9 @@ export class UserBuilder {
     return this
   }
 
+  /**
+   * Returns an instance.
+   */
   build() {
     return {
       username: this.username,
