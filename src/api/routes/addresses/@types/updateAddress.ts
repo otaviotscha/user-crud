@@ -12,7 +12,6 @@ export class UpdateAddressBody {
   @IsString()
   @IsNotEmpty()
   city: string
-  email?: string
 }
 
 export class UpdateAddressResponse {
