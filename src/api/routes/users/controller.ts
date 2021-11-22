@@ -30,7 +30,7 @@ export class UsersController {
   }
 
   @Post()
-  @OpenAPI({ summary: 'Creates an user' })
+  @OpenAPI({ summary: 'Creates a new user' })
   @ResponseSchema(CreateUserResponse)
   @HttpCode(201)
   @OnUndefined(400)
