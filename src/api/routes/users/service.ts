@@ -6,40 +6,6 @@ import { logger } from '~/common/logger'
 import { CreateUserBody } from './@types/createUser'
 
 /**
- * Finds users accordingly to data received.
- */
-export const findMany = async () => {
-  try {
-    logger.info('=== User:findMany ===')
-
-    logger.info(`Searching all users`)
-    const foundUsers = await prisma.user.findMany({
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        username: true,
-        password: false,
-        firstName: true,
-        lastName: true,
-        age: true,
-        email: true
-      }
-    })
-    if (foundUsers.length === 0) throw new NotFoundError(`No user was found`)
-    logger.info(`Found "${foundUsers.length}" users`)
-
-    return foundUsers
-  } catch (error) {
-    logThrownError(error)
-  } finally {
-    logger.info('=== /User:findMany ===')
-
-    prisma.$disconnect()
-  }
-}
-
-/**
  * Finds an user.
  */
 export const findOne = async (id: string) => {
@@ -49,7 +15,7 @@ export const findOne = async (id: string) => {
   } catch (error) {
     logThrownError(error)
   } finally {
-    logger.info('=== /User:findMany ===')
+    logger.info('=== /User:findOne ===')
 
     prisma.$disconnect()
   }

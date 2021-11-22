@@ -1,4 +1,4 @@
-import { Body, Delete, Get, HttpCode, JsonController, OnUndefined, Param, Post, Put } from 'routing-controllers'
+import { Authorized, Body, CurrentUser, Delete, Get, HttpCode, JsonController, OnUndefined, Post, Put } from 'routing-controllers'
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi'
 
 /**
@@ -7,6 +7,7 @@ import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi'
 import { CreateUserBody, CreateUserResponse } from './@types/createUser'
 import { GetUserResponse } from './@types/getUser'
 import { UpdateUserBody, UpdateUserResponse } from './@types/updateUser'
+import { UserInfo } from '~/api/helpers/@types/userInfo'
 
 /**
  * Services.
@@ -16,24 +17,16 @@ import * as userService from './service'
 /**
  * Controller.
  */
-@JsonController('/users')
+@JsonController('/user')
 export class UsersController {
   @Get()
-  @OpenAPI({ summary: 'Returns all users' })
-  @ResponseSchema(GetUserResponse, { isArray: true })
-  @HttpCode(200)
-  @OnUndefined(404)
-  getAll() {
-    return userService.findMany()
-  }
-
-  @Get('/:id')
-  @OpenAPI({ summary: 'Returns an user' })
+  @OpenAPI({ summary: 'Returns the logged user' })
   @ResponseSchema(GetUserResponse)
+  @Authorized()
   @HttpCode(200)
   @OnUndefined(404)
-  getOne(@Param('id') id: string) {
-    return userService.findOne(id)
+  getOne(@CurrentUser() user: UserInfo) {
+    return userService.findOne(user.id)
   }
 
   @Post()
@@ -45,20 +38,22 @@ export class UsersController {
     return userService.create(users)
   }
 
-  @Put('/:id')
-  @OpenAPI({ summary: 'Updates an user' })
+  @Put()
+  @Authorized()
+  @OpenAPI({ summary: 'Updates the logged user' })
   @ResponseSchema(UpdateUserResponse)
   @HttpCode(200)
   @OnUndefined(400)
-  put(@Param('id') id: string, @Body() data: UpdateUserBody) {
-    return userService.update(id, data)
+  put(@CurrentUser() user: UserInfo, @Body() data: UpdateUserBody) {
+    return userService.update(user.id, data)
   }
 
-  @Delete('/:id')
-  @OpenAPI({ summary: 'Deletes an user' })
+  @Delete()
+  @Authorized()
+  @OpenAPI({ summary: 'Deletes the logged user' })
   @HttpCode(204)
   @OnUndefined(204)
-  remove(@Param('id') id: string) {
-    return userService.remove(id)
+  remove(@CurrentUser() user: UserInfo) {
+    return userService.remove(user.id)
   }
 }

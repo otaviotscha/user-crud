@@ -10,6 +10,10 @@ import { startServer, server, closeServer } from 'helpers/server'
  * Builders.
  */
 import { UserBuilder } from '~/builders/user'
+
+/**
+ * Database.
+ */
 import { prisma } from '~/common/database'
 
 /**
@@ -19,58 +23,48 @@ describe('ROUTES: Users', () => {
   beforeAll(startServer)
   beforeEach(cleanDatabase)
 
-  test('should bring all existing users', async () => {
-    await new UserBuilder().setUsername('jane.doe').setEmail('jane.doe@email.com').save()
-    await new UserBuilder().save()
-    const response = await request(server).get(`/users`)
+  test('should bring one existing user', async () => {
+    const user = await new UserBuilder().save()
+    const tokenResponse = await request(server).post(`/login`).send({
+      username: user.username,
+      password: user.password
+    })
+    const userResponse = await request(server).get(`/user`).set({ authorization: tokenResponse.body.token })
 
-    expect(response.status).toBe(200)
-    expect(response.body).toHaveLength(2)
-    expect(response.body).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: expect.any(String),
-          username: expect.any(String),
-          firstName: expect.any(String),
-          lastName: expect.any(String),
-          age: expect.any(Number),
-          email: expect.any(String)
-        })
-      ])
-    )
-  })
-
-  test('should bring one existing users', async () => {
-    const { id } = await new UserBuilder().save()
-    const response = await request(server).get(`/users/${id}`)
-
-    expect(response.status).toBe(200)
-    expect(response.body).toEqual(
+    expect(userResponse.status).toBe(200)
+    expect(userResponse.body).toEqual(
       expect.objectContaining({
-        id: expect.any(String),
-        username: expect.any(String),
-        firstName: expect.any(String),
-        lastName: expect.any(String),
-        age: expect.any(Number),
-        email: expect.any(String)
+        id: user.id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        age: user.age,
+        email: user.email
       })
     )
   })
 
   test('should save a new user', async () => {
-    const user = new UserBuilder().build()
+    const userBuild = new UserBuilder().build()
 
-    const response = await request(server).post('/users').send(user)
+    const response = await request(server).post('/user').send(userBuild)
+    const savedUser = await prisma.user.findMany()
 
     expect(response.status).toBe(201)
+    expect(savedUser).toHaveLength(1)
     expect(response.body).toEqual({
-      id: expect.any(String),
-      createdAt: expect.any(String)
+      id: savedUser[0].id,
+      createdAt: savedUser[0].createdAt.toISOString()
     })
   })
 
   test('should update an existing user', async () => {
-    const { id } = await new UserBuilder().save()
+    const user = await new UserBuilder().save()
+    const tokenResponse = await request(server).post(`/login`).send({
+      username: user.username,
+      password: user.password
+    })
+
     const toUpdate = {
       username: 'jane.doe',
       password: '654321',
@@ -79,46 +73,36 @@ describe('ROUTES: Users', () => {
       age: 30,
       email: 'jane.doe@email.com'
     }
-    const response = await request(server).put(`/users/${id}`).send(toUpdate)
+    const response = await request(server).put(`/user`).set({ authorization: tokenResponse.body.token }).send(toUpdate)
+    const updatedUser = await prisma.user.findMany()
 
     expect(response.status).toBe(200)
+    expect(updatedUser).toHaveLength(1)
     expect(response.body).toEqual({
-      id,
-      updatedAt: expect.any(String)
+      id: updatedUser[0].id,
+      updatedAt: updatedUser[0].updatedAt.toISOString()
     })
   })
 
   test('should delete an existing user', async () => {
-    await new UserBuilder().setUsername('jane.doe').setEmail('jane.doe@email.com').save()
-    const { id } = await new UserBuilder().save()
+    const userToKeep = await new UserBuilder().setUsername('jane.doe').setEmail('jane.doe@email.com').save()
+    const userToDelete = await new UserBuilder().save()
     const countBeforeDelete = await prisma.user.count()
 
-    const response = await request(server).delete(`/users/${id}`)
+    const tokenResponse = await request(server).post(`/login`).send({
+      username: userToDelete.username,
+      password: userToDelete.password
+    })
+
+    const response = await request(server).delete(`/user`).set({ authorization: tokenResponse.body.token })
+    const savedUsers = await prisma.user.findMany()
     const countAfterDelete = await prisma.user.count()
 
     expect(response.status).toBe(204)
     expect(countBeforeDelete).toBe(2)
     expect(countAfterDelete).toBe(1)
-  })
-
-  test('should return status code 404 trying to find users', async () => {
-    const response = await request(server).get('/users')
-
-    expect(response.status).toBe(404)
-    expect(response.body).toEqual({
-      code: 404,
-      message: expect.any(String)
-    })
-  })
-
-  test('should return status code 404 trying to find one users', async () => {
-    const response = await request(server).get(`/users/c142a3e1-e9de-48a1-bf55-08f623bd57ce`)
-
-    expect(response.status).toBe(404)
-    expect(response.body).toEqual({
-      code: 404,
-      message: expect.any(String)
-    })
+    expect(savedUsers).toHaveLength(1)
+    expect(savedUsers[0]).toEqual(userToKeep)
   })
 
   afterAll(closeServer)

@@ -14,11 +14,11 @@ export const login = async (login: LoginBody) => {
   try {
     logger.info('=== Login:login ===')
 
-    logger.info(`Searching user`)
     const foundUser = await findByUsername(login.username)
     if (login.password !== foundUser.password) throw new UnauthorizedError('Incorrect password')
 
-    return { token: sign(JSON.stringify(login), SECRET) }
+    logger.info(`User "${foundUser.id}" has successfully logged in`)
+    return { token: sign({ id: foundUser.id, username: foundUser.username }, SECRET) }
   } catch (error) {
     logThrownError(error)
   } finally {
@@ -34,7 +34,8 @@ export const login = async (login: LoginBody) => {
 export const findByUsername = async (username: string) => {
   logger.info(`Searching user by username "${username}"`)
   const foundUser = await prisma.user.findFirst({
-    where: { username }
+    where: { username },
+    select: { id: true, username: true, password: true }
   })
   if (!foundUser) throw new NotFoundError(`User was not found`)
   return foundUser
