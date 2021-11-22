@@ -8,12 +8,14 @@ import { serverOptions } from '~/server'
 
 export const loadDocRoutes = (app: Express) => {
   const storage = getMetadataArgsStorage()
+
   /**
    * Classes to schemas.
    */
   const schemas = validationMetadatasToSchemas({
     refPointerPrefix: '#/components/schemas/'
   })
+
   /**
    * Generates specs.
    */
@@ -30,8 +32,9 @@ export const loadDocRoutes = (app: Express) => {
     },
     info: { title: 'user-crud', version: '0.1' }
   })
+
   /**
-   * Route.
+   * Docs route.
    */
   app.use('/docs', serve, setup(spec))
 }

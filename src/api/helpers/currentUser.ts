@@ -1,14 +1,29 @@
-import { Action, ForbiddenError } from 'routing-controllers'
+import { Action, ForbiddenError, InternalServerError, UnauthorizedError } from 'routing-controllers'
 import { decode } from 'jsonwebtoken'
 
+import { logger } from '~/common/logger'
+
+/**
+ * Types.
+ */
 import { UserInfo } from './@types/userInfo'
 
 export const currentUserChecker = async (action: Action): Promise<UserInfo> => {
-  const token = action.request.headers['authorization']
-  if (!token) throw new ForbiddenError('Failed to get auth token')
+  try {
+    logger.info('=== CurrentUser:checker ===')
 
-  const decodedToken = decode(token, { json: true })
-  if (!decodedToken) throw new ForbiddenError('Failed to get current user info')
+    const token = action.request.headers['authorization']
+    if (!token) throw new UnauthorizedError('Missing authorization header')
 
-  return { id: decodedToken.id, username: decodedToken.username }
+    const decodedToken = decode(token, { json: true })
+    if (!decodedToken) throw new ForbiddenError('Failed to get current user info')
+
+    return { id: decodedToken.id, username: decodedToken.username }
+  } catch (error) {
+    if (!(error instanceof Error)) throw new InternalServerError('Unexpected error')
+    logger.error(error.message)
+    throw error
+  } finally {
+    logger.info('=== /CurrentUser:checker===')
+  }
 }
