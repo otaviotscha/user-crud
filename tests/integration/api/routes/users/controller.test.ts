@@ -31,7 +31,6 @@ describe('ROUTES: Users', () => {
         expect.objectContaining({
           id: expect.any(String),
           username: expect.any(String),
-          password: expect.any(String),
           firstName: expect.any(String),
           lastName: expect.any(String),
           age: expect.any(Number),
@@ -50,7 +49,6 @@ describe('ROUTES: Users', () => {
       expect.objectContaining({
         id: expect.any(String),
         username: expect.any(String),
-        password: expect.any(String),
         firstName: expect.any(String),
         lastName: expect.any(String),
         age: expect.any(Number),

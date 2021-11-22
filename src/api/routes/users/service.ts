@@ -13,7 +13,19 @@ export const findMany = async () => {
     logger.info('=== User:findMany ===')
 
     logger.info(`Searching all users`)
-    const foundUsers = await prisma.user.findMany()
+    const foundUsers = await prisma.user.findMany({
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        username: true,
+        password: false,
+        firstName: true,
+        lastName: true,
+        age: true,
+        email: true
+      }
+    })
     if (foundUsers.length === 0) throw new NotFoundError(`No user was found`)
     logger.info(`Found "${foundUsers.length}" users`)
 
@@ -119,7 +131,18 @@ export const remove = async (id: string) => {
 export const findById = async (id: string) => {
   logger.info(`Searching user "${id}"`)
   const foundUser = await prisma.user.findFirst({
-    where: { id }
+    where: { id },
+    select: {
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+      username: true,
+      password: false,
+      firstName: true,
+      lastName: true,
+      age: true,
+      email: true
+    }
   })
   if (!foundUser) throw new NotFoundError(`User "${id}" was not found`)
   return foundUser

@@ -6,10 +6,6 @@ export class GetUserResponse {
 
   @IsString()
   @IsNotEmpty()
-  username: string
-
-  @IsString()
-  @IsNotEmpty()
   password: string
 
   @IsString()
