@@ -20,7 +20,7 @@ import * as userService from './service'
 @JsonController('/user')
 export class UsersController {
   @Get()
-  @OpenAPI({ summary: 'Returns the logged user' })
+  @OpenAPI({ summary: 'Returns the logged user', security: [{ bearerAuth: [] }] })
   @ResponseSchema(GetUserResponse)
   @Authorized()
   @HttpCode(200)
@@ -40,7 +40,7 @@ export class UsersController {
 
   @Put()
   @Authorized()
-  @OpenAPI({ summary: 'Updates the logged user' })
+  @OpenAPI({ summary: 'Updates the logged user', security: [{ bearerAuth: [] }] })
   @ResponseSchema(UpdateUserResponse)
   @HttpCode(200)
   @OnUndefined(400)
@@ -50,7 +50,7 @@ export class UsersController {
 
   @Delete()
   @Authorized()
-  @OpenAPI({ summary: 'Deletes the logged user' })
+  @OpenAPI({ summary: 'Deletes the logged user', security: [{ bearerAuth: [] }] })
   @HttpCode(204)
   @OnUndefined(204)
   remove(@CurrentUser() user: UserInfo) {
