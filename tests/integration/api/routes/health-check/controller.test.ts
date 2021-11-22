@@ -9,9 +9,5 @@ describe('ROUTES: Health Check', () => {
     request(server).get('/health-check').expect(204, done)
   })
 
-  test('should return status code 404', done => {
-    request(server).get('/not-found-route').expect(404, done)
-  })
-
   afterAll(closeServer)
 })

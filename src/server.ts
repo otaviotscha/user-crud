@@ -26,8 +26,8 @@ export const serverOptions: RoutingControllersOptions = {
   defaultErrorHandler: false,
   controllers: [controllersPath],
   middlewares: [middlewaresPath],
-  authorizationChecker: authorizationChecker,
-  currentUserChecker: currentUserChecker
+  authorizationChecker,
+  currentUserChecker
 }
 
 /**

@@ -14,7 +14,7 @@ const transportsLogger =
   NODE_ENV === EnvironmentType.PRODUCTION ? [new transports.Console(consoleOptions)] : [new transports.Console(consoleOptions)]
 
 /**
- * Create logger.
+ * Creates logger.
  */
 export const logger = createLogger({
   transports: transportsLogger
