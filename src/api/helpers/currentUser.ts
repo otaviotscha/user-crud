@@ -20,9 +20,9 @@ export const currentUserChecker = async (action: Action): Promise<UserInfo> => {
 
     return { id: decodedToken.id, username: decodedToken.username }
   } catch (error) {
+    logger.error((error as Error).message)
     if (!(error instanceof Error)) throw new InternalServerError('Unexpected error')
-    logger.error(error.message)
-    throw error
+    throw Error
   } finally {
     logger.info('=== /CurrentUser:checker===')
   }
