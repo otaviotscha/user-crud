@@ -1,4 +1,4 @@
-import { NotFoundError } from 'routing-controllers'
+import { ForbiddenError, NotFoundError } from 'routing-controllers'
 
 import { prisma } from '~/common/database'
 import { logThrownError } from '~/common/helpers'
@@ -8,12 +8,12 @@ import { CreateAddressBody } from './@types/createAddress'
 /**
  * Finds address accordingly to data received.
  */
-export const findMany = async () => {
+export const findMany = async (userId: string) => {
   try {
     logger.info('=== Address:findMany ===')
 
-    logger.info(`Searching all addresses`)
-    const foundAddresses = await prisma.address.findMany()
+    logger.info(`Searching all user's "${userId}" addresses`)
+    const foundAddresses = await prisma.address.findMany({ where: { userId } })
     if (foundAddresses.length === 0) throw new NotFoundError(`No address was found`)
     logger.info(`Found "${foundAddresses.length}" addresses`)
 
@@ -30,14 +30,14 @@ export const findMany = async () => {
 /**
  * Finds an address.
  */
-export const findOne = async (id: string) => {
+export const findOne = async (userId: string, addressId: string) => {
   try {
     logger.info('=== Address:findOne ===')
-    return findById(id)
+    return findById(userId, addressId)
   } catch (error) {
     logThrownError(error)
   } finally {
-    logger.info('=== /Address:findMany ===')
+    logger.info('=== /Address:findOne ===')
 
     prisma.$disconnect()
   }
@@ -46,13 +46,13 @@ export const findOne = async (id: string) => {
 /**
  * Creates a new address.
  */
-export const create = async (data: CreateAddressBody) => {
+export const create = async (userId: string, data: CreateAddressBody) => {
   try {
     logger.info('=== Address:create ===')
 
-    logger.info(`Creating address "${JSON.stringify(data)}"`)
+    logger.info(`Creating user's "${userId}" address "${JSON.stringify(data)}"`)
     const { id, createdAt } = await prisma.address.create({
-      data
+      data: { userId, ...data }
     })
     logger.info(`Address "${id}" was successfully created`)
 
@@ -69,20 +69,20 @@ export const create = async (data: CreateAddressBody) => {
 /**
  * Updates an existing address.
  */
-export const update = async (id: string, data: CreateAddressBody) => {
+export const update = async (userId: string, addressId: string, data: CreateAddressBody) => {
   try {
     logger.info('=== Address:update ===')
 
-    await findById(id)
+    await findById(userId, addressId)
 
-    logger.info(`Updating address ${JSON.stringify({ id, ...data })}`)
+    logger.info(`Updating users's "${userId}" address ${JSON.stringify({ data })}`)
     const { updatedAt } = await prisma.address.update({
-      where: { id },
+      where: { id: addressId },
       data: data
     })
 
-    logger.info(`Address ${id} successfully updated`)
-    return { id, updatedAt }
+    logger.info(`Address ${addressId} successfully updated`)
+    return { id: addressId, updatedAt }
   } catch (error) {
     logThrownError(error)
   } finally {
@@ -95,15 +95,15 @@ export const update = async (id: string, data: CreateAddressBody) => {
 /**
  * Removes an address.
  */
-export const remove = async (id: string) => {
+export const remove = async (userId: string, addressId: string) => {
   try {
     logger.info('=== Address:remove ===')
 
-    await findById(id)
+    await findById(userId, addressId)
 
-    logger.info(`Deleting address "${id}"`)
-    await prisma.address.delete({ where: { id } })
-    logger.info(`Address "${id}" successfully deleted`)
+    logger.info(`Deleting address "${addressId}"`)
+    await prisma.address.delete({ where: { id: addressId } })
+    logger.info(`Address "${addressId}" successfully deleted`)
   } catch (error) {
     logThrownError(error)
   } finally {
@@ -116,11 +116,13 @@ export const remove = async (id: string) => {
 /**
  * Finds address by id.
  */
-export const findById = async (id: string) => {
-  logger.info(`Searching address "${id}"`)
+export const findById = async (userId: string, addressId: string) => {
+  logger.info(`Searching address "${addressId}"`)
   const foundAddress = await prisma.address.findFirst({
-    where: { id }
+    where: { id: addressId }
   })
-  if (!foundAddress) throw new NotFoundError(`Address ${id} was not found`)
+  if (!foundAddress) throw new NotFoundError(`Address "${addressId}" was not found`)
+  if (foundAddress.userId !== userId) throw new ForbiddenError(`User "${userId}" does not have access to address "${addressId}"`)
+
   return foundAddress
 }
