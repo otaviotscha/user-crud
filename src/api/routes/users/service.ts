@@ -107,7 +107,8 @@ export const findById = async (id: string) => {
       firstName: true,
       lastName: true,
       age: true,
-      email: true
+      email: true,
+      Address: true
     }
   })
   if (!foundUser) throw new NotFoundError(`User "${id}" was not found`)

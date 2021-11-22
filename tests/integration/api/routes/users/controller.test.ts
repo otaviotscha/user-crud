@@ -15,6 +15,7 @@ import { UserBuilder } from '~/builders/user'
  * Database.
  */
 import { prisma } from '~/common/database'
+import { AddressBuilder } from '~/builders/address'
 
 /**
  * Test suite.
@@ -125,6 +126,52 @@ describe('ROUTES: Users', () => {
     expect(countAfterDelete).toBe(1)
     expect(savedUsers).toHaveLength(1)
     expect(savedUsers[0]).toEqual(userToKeep)
+  })
+
+  test('should bring one user with two addresses', async () => {
+    const user = await new UserBuilder().save()
+    const address1 = await new AddressBuilder().setUser(user).save()
+    const address2 = await new AddressBuilder().setUser(user).save()
+
+    const tokenResponse = await request(server).post(`/login`).send({
+      username: user.username,
+      password: user.password
+    })
+    const userResponse = await request(server).get(`/user`).set({ authorization: tokenResponse.body.token })
+
+    expect(userResponse.status).toBe(200)
+    expect(userResponse.body).toEqual(
+      expect.objectContaining({
+        id: user.id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        age: user.age,
+        email: user.email,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
+        Address: [
+          {
+            id: address1.id,
+            number: address1.number,
+            street: address1.street,
+            city: address1.city,
+            userId: user.id,
+            createdAt: address1.createdAt.toISOString(),
+            updatedAt: address1.updatedAt.toISOString()
+          },
+          {
+            id: address2.id,
+            number: address2.number,
+            street: address2.street,
+            city: address2.city,
+            userId: user.id,
+            createdAt: address2.createdAt.toISOString(),
+            updatedAt: address2.updatedAt.toISOString()
+          }
+        ]
+      })
+    )
   })
 
   afterAll(closeServer)
