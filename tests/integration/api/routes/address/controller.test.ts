@@ -44,7 +44,8 @@ describe('ROUTES: Addresses', () => {
           street: addressToGet.street,
           city: addressToGet.city,
           createdAt: addressToGet.createdAt.toISOString(),
-          updatedAt: addressToGet.updatedAt.toISOString()
+          updatedAt: addressToGet.updatedAt.toISOString(),
+          userId: userToLogin.id
         })
       ])
     )
@@ -68,7 +69,8 @@ describe('ROUTES: Addresses', () => {
         street: addressToGet.street,
         city: addressToGet.city,
         createdAt: addressToGet.createdAt.toISOString(),
-        updatedAt: addressToGet.updatedAt.toISOString()
+        updatedAt: addressToGet.updatedAt.toISOString(),
+        userId: userToLogin.id
       })
     )
   })
@@ -99,7 +101,8 @@ describe('ROUTES: Addresses', () => {
         id: response.body.id,
         number: addressToSave.number,
         street: addressToSave.street,
-        city: addressToSave.city
+        city: addressToSave.city,
+        userId: userToLogin.id
       })
     )
   })
@@ -135,7 +138,8 @@ describe('ROUTES: Addresses', () => {
         id: response.body.id,
         number: toUpdate.number,
         street: toUpdate.street,
-        city: toUpdate.city
+        city: toUpdate.city,
+        userId: userToLogin.id
       })
     )
   })
@@ -163,6 +167,77 @@ describe('ROUTES: Addresses', () => {
     expect(countAfterDelete).toBe(1)
     expect(savedAddress).toHaveLength(1)
     expect(savedAddress[0]).toEqual(addressToKeep)
+  })
+
+  test(`should bring one logged user's addresses using street's name in query`, async () => {
+    const user = await new UserBuilder().save()
+    const address1 = await new AddressBuilder().setUser(user).save()
+    await new AddressBuilder().setUser(user).setStreet('Jane Doe').save()
+
+    const tokenResponse = await request(server).post(`/login`).send({
+      username: user.username,
+      password: user.password
+    })
+    const response = await request(server)
+      .get(`/user/addresses`)
+      .set({ authorization: tokenResponse.body.token })
+      .query({ street: address1.street })
+
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveLength(1)
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: address1.id,
+          number: address1.number,
+          street: address1.street,
+          city: address1.city,
+          createdAt: address1.createdAt.toISOString(),
+          updatedAt: address1.updatedAt.toISOString(),
+          userId: user.id
+        })
+      ])
+    )
+  })
+
+  test(`should bring two logged user's addresses using city's name in query`, async () => {
+    const user = await new UserBuilder().save()
+    const address1 = await new AddressBuilder().setUser(user).save()
+    const address2 = await new AddressBuilder().setUser(user).setStreet('Jane Doe').save()
+
+    const tokenResponse = await request(server).post(`/login`).send({
+      username: user.username,
+      password: user.password
+    })
+    const response = await request(server)
+      .get(`/user/addresses`)
+      .set({ authorization: tokenResponse.body.token })
+      .query({ city: address1.city })
+
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveLength(2)
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        {
+          id: address1.id,
+          number: address1.number,
+          street: address1.street,
+          city: address1.city,
+          createdAt: address1.createdAt.toISOString(),
+          updatedAt: address1.updatedAt.toISOString(),
+          userId: user.id
+        },
+        {
+          id: address2.id,
+          number: address2.number,
+          street: address2.street,
+          city: address2.city,
+          createdAt: address2.createdAt.toISOString(),
+          updatedAt: address2.updatedAt.toISOString(),
+          userId: user.id
+        }
+      ])
+    )
   })
 
   afterAll(closeServer)

@@ -3,17 +3,19 @@ import { ForbiddenError, NotFoundError } from 'routing-controllers'
 import { prisma } from '~/common/database'
 import { logThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
+
 import { CreateAddressBody } from './@types/createAddress'
+import { GetAddressQuery } from './@types/getAddress'
 
 /**
  * Finds address accordingly to data received.
  */
-export const findMany = async (userId: string) => {
+export const findMany = async (userId: string, queryParams: GetAddressQuery) => {
   try {
     logger.info('=== Address:findMany ===')
 
-    logger.info(`Searching all user's "${userId}" addresses`)
-    const foundAddresses = await prisma.address.findMany({ where: { userId } })
+    logger.info(`Searching many user's "${userId}" addresses`)
+    const foundAddresses = await prisma.address.findMany({ where: { userId, ...queryParams } })
     if (foundAddresses.length === 0) throw new NotFoundError(`No address was found`)
     logger.info(`Found "${foundAddresses.length}" addresses`)
 

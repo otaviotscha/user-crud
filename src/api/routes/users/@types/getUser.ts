@@ -1,4 +1,18 @@
-import { IsUUID, IsString, IsNotEmpty, IsNumber, IsPositive, Max, IsOptional, IsEmail, IsDateString } from 'class-validator'
+import {
+  IsUUID,
+  IsString,
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  Max,
+  IsOptional,
+  IsEmail,
+  IsDateString,
+  IsArray,
+  IsObject,
+  IsInstance
+} from 'class-validator'
+import { GetAddressResponse } from '../../addresses/@types/getAddress'
 
 export class GetUserResponse {
   @IsUUID()
@@ -30,4 +44,9 @@ export class GetUserResponse {
 
   @IsDateString()
   updatedAt: string
+
+  @IsArray()
+  @IsObject()
+  @IsInstance(GetAddressResponse, { each: true })
+  Address: GetAddressResponse[]
 }

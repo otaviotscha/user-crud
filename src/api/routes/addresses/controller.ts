@@ -1,11 +1,24 @@
-import { Authorized, Body, CurrentUser, Delete, Get, HttpCode, JsonController, OnUndefined, Param, Post, Put } from 'routing-controllers'
+import {
+  Authorized,
+  Body,
+  CurrentUser,
+  Delete,
+  Get,
+  HttpCode,
+  JsonController,
+  OnUndefined,
+  Param,
+  Post,
+  Put,
+  QueryParams
+} from 'routing-controllers'
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi'
 
 /**
  * Types.
  */
 import { CreateAddressBody, CreateAddressResponse } from './@types/createAddress'
-import { GetAddressResponse } from './@types/getAddress'
+import { GetAddressQuery, GetAddressResponse } from './@types/getAddress'
 import { UpdateAddressBody, UpdateAddressResponse } from './@types/updateAddress'
 import { UserInfo } from '~/api/helpers/@types/userInfo'
 
@@ -21,12 +34,12 @@ import * as addressService from './service'
 export class AddressesController {
   @Get()
   @Authorized()
-  @OpenAPI({ summary: `Returns all logged user's addresses`, security: [{ bearerAuth: [] }] })
+  @OpenAPI({ summary: `Returns many logged user's addresses`, security: [{ bearerAuth: [] }] })
   @ResponseSchema(GetAddressResponse, { isArray: true })
   @HttpCode(200)
   @OnUndefined(404)
-  getAll(@CurrentUser() user: UserInfo) {
-    return addressService.findMany(user.id)
+  getMany(@CurrentUser() user: UserInfo, @QueryParams() queryParams: GetAddressQuery) {
+    return addressService.findMany(user.id, queryParams)
   }
 
   @Get('/:id')

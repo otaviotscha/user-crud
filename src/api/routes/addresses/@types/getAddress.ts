@@ -1,4 +1,25 @@
-import { IsUUID, IsString, IsNotEmpty, IsNumber, IsPositive, IsDateString } from 'class-validator'
+import { IsUUID, IsString, IsNotEmpty, IsNumber, IsPositive, IsDateString, IsOptional } from 'class-validator'
+
+export class GetAddressQuery {
+  @IsOptional()
+  @IsUUID()
+  id: string
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  number: number
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  street: string
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  city: string
+}
 
 export class GetAddressResponse {
   @IsUUID()
@@ -21,4 +42,7 @@ export class GetAddressResponse {
 
   @IsDateString()
   updatedAt: string
+
+  @IsUUID()
+  userId: string
 }
