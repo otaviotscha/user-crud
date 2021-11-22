@@ -18,7 +18,16 @@ export const loadDocRoutes = (app: Express) => {
    * Generates specs.
    */
   const spec = routingControllersToSpec(storage, serverOptions, {
-    components: { schemas },
+    components: {
+      schemas,
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
+    },
     info: { title: 'user-crud', version: '0.1' }
   })
   /**
