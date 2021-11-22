@@ -39,7 +39,9 @@ describe('ROUTES: Users', () => {
         firstName: user.firstName,
         lastName: user.lastName,
         age: user.age,
-        email: user.email
+        email: user.email,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString()
       })
     )
   })
@@ -56,6 +58,16 @@ describe('ROUTES: Users', () => {
       id: savedUser[0].id,
       createdAt: savedUser[0].createdAt.toISOString()
     })
+    expect(savedUser[0]).toEqual(
+      expect.objectContaining({
+        id: response.body.id,
+        username: userBuild.username,
+        firstName: userBuild.firstName,
+        lastName: userBuild.lastName,
+        age: userBuild.age,
+        email: userBuild.email
+      })
+    )
   })
 
   test('should update an user', async () => {
@@ -82,6 +94,16 @@ describe('ROUTES: Users', () => {
       id: updatedUser[0].id,
       updatedAt: updatedUser[0].updatedAt.toISOString()
     })
+    expect(updatedUser[0]).toEqual(
+      expect.objectContaining({
+        id: response.body.id,
+        username: toUpdate.username,
+        firstName: toUpdate.firstName,
+        lastName: toUpdate.lastName,
+        age: toUpdate.age,
+        email: toUpdate.email
+      })
+    )
   })
 
   test('should delete an user', async () => {
