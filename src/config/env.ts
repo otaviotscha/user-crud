@@ -18,4 +18,8 @@ const fileName = (() => {
 
 config({ path: resolve(__dirname, '..', '..', fileName) })
 
-export const { PORT = process.env.PORT ? process.env.PORT : 4000, NODE_ENV = EnvironmentType.DEV } = process.env
+export const {
+  PORT = process.env.PORT ? process.env.PORT : 4000,
+  NODE_ENV = EnvironmentType.DEV,
+  SECRET = process.env.SECRET ? process.env.SECRET : ''
+} = process.env

@@ -121,6 +121,6 @@ export const findById = async (id: string) => {
   const foundUser = await prisma.user.findFirst({
     where: { id }
   })
-  if (!foundUser) throw new NotFoundError(`User ${id} was not found`)
+  if (!foundUser) throw new NotFoundError(`User "${id}" was not found`)
   return foundUser
 }

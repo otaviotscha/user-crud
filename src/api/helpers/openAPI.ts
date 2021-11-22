@@ -2,8 +2,9 @@ import { getMetadataArgsStorage } from 'routing-controllers'
 import { routingControllersToSpec } from 'routing-controllers-openapi'
 import { serve, setup } from 'swagger-ui-express'
 import { Express } from 'express'
-import { serverOptions } from '~/server'
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema'
+
+import { serverOptions } from '~/server'
 
 export const loadDocRoutes = (app: Express) => {
   const storage = getMetadataArgsStorage()

@@ -20,7 +20,7 @@ describe('ROUTES: Users', () => {
   beforeEach(cleanDatabase)
 
   test('should bring all existing users', async () => {
-    await new UserBuilder().setEmail('jane.doe@email.com').save()
+    await new UserBuilder().setUsername('jane.doe').setEmail('jane.doe@email.com').save()
     await new UserBuilder().save()
     const response = await request(server).get(`/users`)
 
@@ -91,7 +91,7 @@ describe('ROUTES: Users', () => {
   })
 
   test('should delete an existing user', async () => {
-    await new UserBuilder().setEmail('jane.doe@email.com').save()
+    await new UserBuilder().setUsername('jane.doe').setEmail('jane.doe@email.com').save()
     const { id } = await new UserBuilder().save()
     const countBeforeDelete = await prisma.user.count()
 

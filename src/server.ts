@@ -3,7 +3,10 @@ import 'reflect-metadata'
 import path from 'path'
 import { Express } from 'express'
 import { createExpressServer, RoutingControllersOptions } from 'routing-controllers'
-import { loadDocRoutes } from './api/docs/openAPI'
+
+import { loadDocRoutes } from './api/helpers/openAPI'
+import { authorizationChecker } from './api/helpers/authorization'
+import { currentUserChecker } from './api/helpers/currentUser'
 
 /**
  * Loading controllers.
@@ -22,7 +25,9 @@ export const serverOptions: RoutingControllersOptions = {
   cors: '*',
   defaultErrorHandler: false,
   controllers: [controllersPath],
-  middlewares: [middlewaresPath]
+  middlewares: [middlewaresPath],
+  authorizationChecker: authorizationChecker,
+  currentUserChecker: currentUserChecker
 }
 
 /**
