@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsNotEmpty, IsNumber, IsPositive, Max, IsEmail, IsUUID, IsDateString } from 'class-validator'
+import { IsOptional, IsString, IsNotEmpty, IsEmail, IsUUID, IsDateString } from 'class-validator'
 
 export class UpdateUserBody {
   @IsOptional()
@@ -20,13 +20,6 @@ export class UpdateUserBody {
   @IsString()
   @IsNotEmpty()
   lastName: string
-
-  @IsOptional()
-  @IsNumber()
-  @IsPositive()
-  @Max(200)
-  age: number
-
   @IsOptional()
   @IsEmail()
   email?: string

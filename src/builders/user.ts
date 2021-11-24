@@ -8,7 +8,6 @@ export class UserBuilder {
   private password = 'pass'
   private firstName = 'John'
   private lastName = 'Doe'
-  private age = 20
   private email = 'john.doe@email.com'
 
   setUsername(username: string) {
@@ -31,11 +30,6 @@ export class UserBuilder {
     return this
   }
 
-  setAge(age: number) {
-    this.age = age
-    return this
-  }
-
   setEmail(email: string) {
     this.email = email
     return this
@@ -50,7 +44,6 @@ export class UserBuilder {
       password: this.password,
       firstName: this.firstName,
       lastName: this.lastName,
-      age: this.age,
       email: this.email
     }
   }

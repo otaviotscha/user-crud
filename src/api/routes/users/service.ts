@@ -106,7 +106,6 @@ export const findById = async (id: string) => {
       password: false,
       firstName: true,
       lastName: true,
-      age: true,
       email: true,
       Address: true
     }

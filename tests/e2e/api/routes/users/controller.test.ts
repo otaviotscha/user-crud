@@ -39,7 +39,6 @@ describe('ROUTES: Users', () => {
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
-        age: user.age,
         email: user.email,
         createdAt: user.createdAt.toISOString(),
         updatedAt: user.updatedAt.toISOString()
@@ -65,7 +64,6 @@ describe('ROUTES: Users', () => {
         username: userBuild.username,
         firstName: userBuild.firstName,
         lastName: userBuild.lastName,
-        age: userBuild.age,
         email: userBuild.email
       })
     )
@@ -83,7 +81,6 @@ describe('ROUTES: Users', () => {
       password: '654321',
       firstName: 'Jane',
       lastName: 'Doe',
-      age: 30,
       email: 'jane.doe@email.com'
     }
     const response = await request(server).put(`/user`).set({ authorization: tokenResponse.body.token }).send(toUpdate)
@@ -101,7 +98,6 @@ describe('ROUTES: Users', () => {
         username: toUpdate.username,
         firstName: toUpdate.firstName,
         lastName: toUpdate.lastName,
-        age: toUpdate.age,
         email: toUpdate.email
       })
     )
@@ -146,7 +142,6 @@ describe('ROUTES: Users', () => {
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
-        age: user.age,
         email: user.email,
         createdAt: user.createdAt.toISOString(),
         updatedAt: user.updatedAt.toISOString(),
