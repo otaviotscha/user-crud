@@ -4,8 +4,9 @@
   "main": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "set NODE_ENV=development&& tsnd -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify ./src/index.ts",
-    "test": "set NODE_ENV=test&& jest --i --no-cache --verbose --runInBand --bail"
+    "dev": "set NODE_ENV=development&&tsnd -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify ./src",
+    "test": "set NODE_ENV=test&&jest --i --no-cache --verbose --runInBand --bail",
+    "lint": "eslint src --ext .ts"
   },
   "dependencies": {
     "@prisma/client": "^3.5.0",

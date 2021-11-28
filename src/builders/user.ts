@@ -4,8 +4,8 @@ import { prisma } from '~/common/database'
  * Builder.
  */
 export class UserBuilder {
-  private username = 'john.doe'
-  private password = 'pass'
+  private username = 'johnDoe'
+  private password = '123456789012'
   private firstName = 'John'
   private lastName = 'Doe'
   private email = 'john.doe@email.com'

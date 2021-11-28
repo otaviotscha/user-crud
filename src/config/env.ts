@@ -1,25 +1,29 @@
 import { config } from 'dotenv'
 import { resolve } from 'path'
 
-import { EnvironmentType } from '~/@types/environment'
+/**
+ * Types.
+ */
+import { EnvironmentDefault as Default, EnvironmentType } from '~/@types/environment'
 
-export const isProductionEnvironment = process.env.NODE_ENV === EnvironmentType.PRODUCTION
-export const isDevelopmentEnvironment = process.env.NODE_ENV === EnvironmentType.DEV
-export const isTestEnvironment = process.env.NODE_ENV === EnvironmentType.TEST
+export const isProductionEnvironment = () => process.env.NODE_ENV === EnvironmentType.PRODUCTION
+export const isDevelopmentEnvironment = () => process.env.NODE_ENV === EnvironmentType.DEV
+export const isTestEnvironment = () => process.env.NODE_ENV === EnvironmentType.TEST
 
 /**
- * Reads from different env files accordingly to current environment.
+ * Reads different env files accordingly to current environment.
  */
 const fileName = (() => {
-  if (isProductionEnvironment) return '.env'
-  if (isDevelopmentEnvironment) return '.env.dev'
-  return '.env.test'
+  if (isDevelopmentEnvironment()) return '.env.dev'
+  if (isTestEnvironment()) return '.env.test'
+  return '.env'
 })()
 
 config({ path: resolve(__dirname, '..', '..', fileName) })
 
 export const {
-  PORT = process.env.PORT ? process.env.PORT : 4000,
+  PORT = Default.PORT,
   NODE_ENV = EnvironmentType.DEV,
-  SECRET = process.env.SECRET ? process.env.SECRET : 'usercrud'
+  SECRET = Default.SECRET,
+  TOKEN_EXPIRATION = Default.TOKEN_EXPIRATION
 } = process.env

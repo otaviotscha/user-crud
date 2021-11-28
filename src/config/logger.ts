@@ -10,5 +10,5 @@ const INFO_LOG = 'info'
  */
 export const consoleOptions = {
   level: INFO_LOG,
-  silent: isTestEnvironment
+  silent: isTestEnvironment()
 }
