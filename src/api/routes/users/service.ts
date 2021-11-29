@@ -3,7 +3,11 @@ import { NotFoundError } from 'routing-controllers'
 import { prisma } from '~/common/database'
 import { logThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
-import { CreateUserBody } from './@types/createUser'
+
+/**
+ * Types.
+ */
+import { CreateUserBody, UpdateUserBody } from './@types/user'
 
 /**
  * Finds an user.
@@ -47,7 +51,7 @@ export const create = async (data: CreateUserBody) => {
 /**
  * Updates an existing user.
  */
-export const update = async (id: string, data: CreateUserBody) => {
+export const update = async (id: string, data: UpdateUserBody) => {
   try {
     logger.info('=== User:update ===')
 

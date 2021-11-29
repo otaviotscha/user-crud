@@ -35,8 +35,8 @@ describe('ROUTES: Login', () => {
 
   test('should fail to find user', async () => {
     const response = await request(server).post(`/login`).send({
-      username: 'John Doe',
-      password: '123456'
+      username: 'johnDoe',
+      password: '123456789012'
     })
 
     expect(response.status).toBe(404)
@@ -46,7 +46,7 @@ describe('ROUTES: Login', () => {
     const user = await new UserBuilder().save()
     const response = await request(server).post(`/login`).send({
       username: user.username,
-      password: '654322'
+      password: '210987654321'
     })
 
     expect(response.status).toBe(401)

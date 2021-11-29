@@ -1,4 +1,4 @@
-import { Action, ForbiddenError, InternalServerError, UnauthorizedError } from 'routing-controllers'
+import { Action, ForbiddenError, UnauthorizedError } from 'routing-controllers'
 import { JsonWebTokenError, verify } from 'jsonwebtoken'
 
 import { SECRET } from '~/config/env'
@@ -16,7 +16,6 @@ export const authorizationChecker = async (action: Action): Promise<boolean> => 
     return true
   } catch (error) {
     logger.error((error as Error).message)
-    if (!(error instanceof Error)) throw new InternalServerError('Unexpected error')
     if (error instanceof JsonWebTokenError) throw new ForbiddenError(error.message)
     throw error
   } finally {

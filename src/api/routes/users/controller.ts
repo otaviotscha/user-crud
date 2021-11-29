@@ -4,9 +4,7 @@ import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi'
 /**
  * Types.
  */
-import { CreateUserBody, CreateUserResponse } from './@types/createUser'
-import { GetUserResponse } from './@types/getUser'
-import { UpdateUserBody, UpdateUserResponse } from './@types/updateUser'
+import { CreateUserBody, CreateUserResponse, GetUserResponse, UpdateUserBody, UpdateUserResponse } from './@types/user'
 import { UserInfo } from '~/api/helpers/@types/userInfo'
 
 /**

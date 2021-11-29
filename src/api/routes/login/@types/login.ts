@@ -1,16 +1,20 @@
-import { IsString, IsNotEmpty, IsJWT } from 'class-validator'
+import { IsJWT, IsAlphanumeric, IsAscii, Length, IsNumber, IsPositive, IsInt } from 'class-validator'
 
 export class LoginBody {
-  @IsString()
-  @IsNotEmpty()
+  @IsAlphanumeric()
   username: string
 
-  @IsString()
-  @IsNotEmpty()
+  @IsAscii()
+  @Length(12, 30)
   password: string
 }
 
 export class LoginResponse {
   @IsJWT()
   token: string
+
+  @IsNumber()
+  @IsPositive()
+  @IsInt()
+  expiresInSeconds: number
 }

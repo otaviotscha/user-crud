@@ -69,7 +69,7 @@ describe('ROUTES: Users', () => {
     )
   })
 
-  test('should update an user', async () => {
+  test('should completely update an user', async () => {
     const user = await new UserBuilder().save()
     const tokenResponse = await request(server).post(`/login`).send({
       username: user.username,
@@ -77,8 +77,8 @@ describe('ROUTES: Users', () => {
     })
 
     const toUpdate = {
-      username: 'jane.doe',
-      password: '654321',
+      username: 'janeDoe',
+      password: '210987654321',
       firstName: 'Jane',
       lastName: 'Doe',
       email: 'jane.doe@email.com'
@@ -99,6 +99,37 @@ describe('ROUTES: Users', () => {
         firstName: toUpdate.firstName,
         lastName: toUpdate.lastName,
         email: toUpdate.email
+      })
+    )
+  })
+
+  test('should partially update an user', async () => {
+    const user = await new UserBuilder().save()
+    const tokenResponse = await request(server).post(`/login`).send({
+      username: user.username,
+      password: user.password
+    })
+
+    const toUpdate = {
+      firstName: 'Jane',
+      lastName: 'Doe'
+    }
+    const response = await request(server).put(`/user`).set({ authorization: tokenResponse.body.token }).send(toUpdate)
+    const updatedUser = await prisma.user.findMany()
+
+    expect(response.status).toBe(200)
+    expect(updatedUser).toHaveLength(1)
+    expect(response.body).toEqual({
+      id: updatedUser[0].id,
+      updatedAt: updatedUser[0].updatedAt.toISOString()
+    })
+    expect(updatedUser[0]).toEqual(
+      expect.objectContaining({
+        id: response.body.id,
+        username: user.username,
+        firstName: toUpdate.firstName,
+        lastName: toUpdate.lastName,
+        email: user.email
       })
     )
   })
