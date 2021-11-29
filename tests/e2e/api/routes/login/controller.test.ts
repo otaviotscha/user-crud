@@ -28,7 +28,8 @@ describe('ROUTES: Login', () => {
     expect(response.status).toBe(200)
     expect(response.body).toEqual(
       expect.objectContaining({
-        token: expect.any(String)
+        token: expect.any(String),
+        expiresInSeconds: expect.any(String)
       })
     )
   })

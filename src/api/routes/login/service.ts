@@ -4,8 +4,16 @@ import { sign } from 'jsonwebtoken'
 import { prisma } from '~/common/database'
 import { logThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
+
+/**
+ * Environment;
+ */
+import { SECRET, TOKEN_EXPIRATION } from '~/config/env'
+
+/**
+ * Types.
+ */
 import { LoginBody } from './@types/login'
-import { SECRET } from '~/config/env'
 
 /**
  * Login service.
@@ -17,8 +25,9 @@ export const login = async (login: LoginBody) => {
     const foundUser = await findByUsername(login.username)
     if (login.password !== foundUser.password) throw new UnauthorizedError('Incorrect password')
 
+    const token = sign({ id: foundUser.id, username: foundUser.username }, SECRET, { expiresIn: TOKEN_EXPIRATION })
     logger.info(`User "${foundUser.id}" has successfully logged in`)
-    return { token: sign({ id: foundUser.id, username: foundUser.username }, SECRET) }
+    return { token, expiresInSeconds: TOKEN_EXPIRATION }
   } catch (error) {
     logThrownError(error)
   } finally {
