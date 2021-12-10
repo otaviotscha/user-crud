@@ -2,7 +2,7 @@ import { NotFoundError, UnauthorizedError } from 'routing-controllers'
 import { sign } from 'jsonwebtoken'
 
 import { prisma } from '~/common/database'
-import { logThrownError } from '~/common/helpers'
+import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
 
 /**
@@ -29,7 +29,7 @@ export const login = async (login: LoginBody) => {
     logger.info(`User "${foundUser.id}" has successfully logged in`)
     return { token, expiresInSeconds: TOKEN_EXPIRATION }
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /Login:login ===')
 

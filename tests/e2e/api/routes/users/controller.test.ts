@@ -176,7 +176,7 @@ describe('ROUTES: Users', () => {
         email: user.email,
         createdAt: user.createdAt.toISOString(),
         updatedAt: user.updatedAt.toISOString(),
-        Address: [
+        addresses: [
           {
             id: address1.id,
             number: address1.number,

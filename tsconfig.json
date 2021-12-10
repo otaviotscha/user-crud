@@ -45,7 +45,7 @@
       "helpers/*": ["./tests/helpers/*.ts"]
     },
     // "rootDirs": [],
-    // "typeRoots": [],
+    "typeRoots": ["node_modules/@types"],
     // "types": [],
     // "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

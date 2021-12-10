@@ -1,7 +1,7 @@
 import { NotFoundError } from 'routing-controllers'
 
 import { prisma } from '~/common/database'
-import { logThrownError } from '~/common/helpers'
+import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
 
 /**
@@ -17,7 +17,7 @@ export const findOne = async (id: string) => {
     logger.info('=== User:findOne ===')
     return findById(id)
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /User:findOne ===')
 
@@ -40,7 +40,7 @@ export const create = async (data: CreateUserBody) => {
 
     return { id, createdAt }
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /User:create ===')
 
@@ -66,7 +66,7 @@ export const update = async (id: string, data: UpdateUserBody) => {
     logger.info(`User ${id} successfully updated`)
     return { id, updatedAt }
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /User:update ===')
 
@@ -87,7 +87,7 @@ export const remove = async (id: string) => {
     await prisma.user.delete({ where: { id } })
     logger.info(`User "${id}" successfully deleted`)
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /User:remove ===')
 
@@ -111,7 +111,7 @@ export const findById = async (id: string) => {
       firstName: true,
       lastName: true,
       email: true,
-      Address: true
+      addresses: true
     }
   })
   if (!foundUser) throw new NotFoundError(`User "${id}" was not found`)

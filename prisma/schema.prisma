@@ -20,7 +20,7 @@ model User {
   lastName  String
   email     String? @unique
 
-  Address Address[]
+  addresses Address[]
 }
 
 model Address {
@@ -33,6 +33,6 @@ model Address {
   street String
   city   String
 
-  User   User?   @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id])
   userId String?
 }

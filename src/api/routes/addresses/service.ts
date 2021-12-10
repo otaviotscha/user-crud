@@ -1,7 +1,7 @@
 import { ForbiddenError, NotFoundError } from 'routing-controllers'
 
 import { prisma } from '~/common/database'
-import { logThrownError } from '~/common/helpers'
+import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
 
 import { CreateAddressBody } from './@types/createAddress'
@@ -21,7 +21,7 @@ export const findMany = async (userId: string, queryParams: GetAddressQuery) => 
 
     return foundAddresses
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /Address:findMany ===')
 
@@ -37,7 +37,7 @@ export const findOne = async (userId: string, addressId: string) => {
     logger.info('=== Address:findOne ===')
     return findById(userId, addressId)
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /Address:findOne ===')
 
@@ -60,7 +60,7 @@ export const create = async (userId: string, data: CreateAddressBody) => {
 
     return { id, createdAt }
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /Address:create ===')
 
@@ -86,7 +86,7 @@ export const update = async (userId: string, addressId: string, data: CreateAddr
     logger.info(`Address ${addressId} successfully updated`)
     return { id: addressId, updatedAt }
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /Address:update ===')
 
@@ -107,7 +107,7 @@ export const remove = async (userId: string, addressId: string) => {
     await prisma.address.delete({ where: { id: addressId } })
     logger.info(`Address "${addressId}" successfully deleted`)
   } catch (error) {
-    logThrownError(error)
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /Address:remove ===')
 
