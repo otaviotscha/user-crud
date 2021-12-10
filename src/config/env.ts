@@ -15,15 +15,17 @@ export const isTestEnvironment = () => process.env.NODE_ENV === EnvironmentType.
  */
 const fileName = (() => {
   if (isDevelopmentEnvironment()) return '.env.dev'
-  if (isTestEnvironment()) return '.env.test'
+  if (isTestEnvironment()) return '.env.dev'
   return '.env'
 })()
 
 config({ path: resolve(__dirname, '..', '..', fileName) })
 
+if (isProductionEnvironment() && !process.env.TOKEN_SECRET) throw new Error('A token secret must be supplied')
+
 export const {
   PORT = Default.PORT,
   NODE_ENV = EnvironmentType.DEV,
-  SECRET = Default.SECRET,
+  TOKEN_SECRET = Default.TOKEN_SECRET,
   TOKEN_EXPIRATION = Default.TOKEN_EXPIRATION
 } = process.env

@@ -6,6 +6,6 @@ export enum EnvironmentType {
 
 export enum EnvironmentDefault {
   PORT = '4000',
-  SECRET = 'usercrud',
+  TOKEN_SECRET = 'usercrud',
   TOKEN_EXPIRATION = '3600'
 }

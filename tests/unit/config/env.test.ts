@@ -1,4 +1,4 @@
-import { isDevelopmentEnvironment, isProductionEnvironment, isTestEnvironment, PORT, SECRET, TOKEN_EXPIRATION } from '~/config/env'
+import { isDevelopmentEnvironment, isProductionEnvironment, isTestEnvironment } from '~/config/env'
 
 /**
  * Helpers.
@@ -42,14 +42,8 @@ describe('CONFIG: Env', () => {
 
   test('should confirm all env defaults', async () => {
     expect(Default.PORT).toBe('4000')
-    expect(Default.SECRET).toBe('usercrud')
+    expect(Default.TOKEN_SECRET).toBe('usercrud')
     expect(Default.TOKEN_EXPIRATION).toBe('3600')
-  })
-
-  test('should confirm that ".env.test" was read', async () => {
-    expect(PORT).toBe('5000')
-    expect(SECRET).toBe('usercrud')
-    expect(TOKEN_EXPIRATION).toBe('300')
   })
 
   afterAll(() => (process.env.NODE_ENV = EnvironmentType.TEST))

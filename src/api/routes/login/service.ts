@@ -8,7 +8,7 @@ import { logger } from '~/common/logger'
 /**
  * Environment;
  */
-import { SECRET, TOKEN_EXPIRATION } from '~/config/env'
+import { TOKEN_SECRET, TOKEN_EXPIRATION } from '~/config/env'
 
 /**
  * Types.
@@ -25,7 +25,7 @@ export const login = async (login: LoginBody) => {
     const foundUser = await findByUsername(login.username)
     if (login.password !== foundUser.password) throw new UnauthorizedError('Incorrect password')
 
-    const token = sign({ id: foundUser.id, username: foundUser.username }, SECRET, { expiresIn: TOKEN_EXPIRATION })
+    const token = sign({ id: foundUser.id, username: foundUser.username }, TOKEN_SECRET, { expiresIn: TOKEN_EXPIRATION })
     logger.info(`User "${foundUser.id}" has successfully logged in`)
     return { token, expiresInSeconds: TOKEN_EXPIRATION }
   } catch (error) {

@@ -1,7 +1,7 @@
 import { Action, ForbiddenError, UnauthorizedError } from 'routing-controllers'
 import { JsonWebTokenError, verify } from 'jsonwebtoken'
 
-import { SECRET } from '~/config/env'
+import { TOKEN_SECRET } from '~/config/env'
 import { logger } from '~/common/logger'
 
 export const authorizationChecker = async (action: Action): Promise<boolean> => {
@@ -11,7 +11,7 @@ export const authorizationChecker = async (action: Action): Promise<boolean> => 
     const token = action.request.headers['authorization']
     if (!token) throw new UnauthorizedError('Missing authorization header')
 
-    verify(token, SECRET)
+    verify(token, TOKEN_SECRET)
     logger.info('Success')
     return true
   } catch (error) {
