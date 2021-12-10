@@ -1,3 +1,6 @@
+import './config/aliases'
+import './config/env'
+
 import { server } from '~/server'
 import { logger } from './common/logger'
 import { PORT } from './config/env'
