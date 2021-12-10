@@ -9,7 +9,7 @@ import { startServer, server, closeServer } from 'helpers/server'
 /**
  * Builders.
  */
-import { UserBuilder } from '~/builders/user'
+import { UserBuilder } from 'helpers/builders/user'
 
 /**
  * Test suite.

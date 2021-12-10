@@ -1,5 +1,5 @@
 import { cleanDatabase } from 'helpers/database'
-import { UserBuilder } from '~/builders/user'
+import { UserBuilder } from 'helpers/builders/user'
 import { prisma } from '~/common/database'
 
 describe('BUILDERS: User', () => {

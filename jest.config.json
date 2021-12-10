@@ -13,7 +13,7 @@
     "src/**/*.ts",
     "!src/index.ts",
     "!src/server.ts",
-    "!src/@types/*.ts",
+    "!src/**/@types/*.ts",
     "!src/common/**/*.ts",
     "!src/config/**/*.ts"
   ]

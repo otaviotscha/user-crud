@@ -11,8 +11,8 @@ import { startServer, server, closeServer } from 'helpers/server'
 /**
  * Builders.
  */
-import { AddressBuilder } from '~/builders/address'
-import { UserBuilder } from '~/builders/user'
+import { AddressBuilder } from 'helpers/builders/address'
+import { UserBuilder } from 'helpers/builders/user'
 
 /**
  * Test suite.
@@ -119,7 +119,7 @@ describe('ROUTES: Addresses', () => {
     const toUpdate = {
       number: 20,
       street: 'Jane Doe Street',
-      city: 'Jane Doe Street'
+      city: 'Jane Doe City'
     }
     const response = await request(server)
       .put(`/user/addresses/${address.id}`)

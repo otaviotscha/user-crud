@@ -9,13 +9,13 @@ import { startServer, server, closeServer } from 'helpers/server'
 /**
  * Builders.
  */
-import { UserBuilder } from '~/builders/user'
+import { UserBuilder } from 'helpers/builders/user'
 
 /**
  * Database.
  */
 import { prisma } from '~/common/database'
-import { AddressBuilder } from '~/builders/address'
+import { AddressBuilder } from 'helpers/builders/address'
 
 /**
  * Test suite.
