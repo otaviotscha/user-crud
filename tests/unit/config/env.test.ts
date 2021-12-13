@@ -44,6 +44,7 @@ describe('CONFIG: Env', () => {
     expect(Default.PORT).toBe('4000')
     expect(Default.TOKEN_SECRET).toBe('usercrud')
     expect(Default.TOKEN_EXPIRATION).toBe('3600')
+    expect(Default.REDIS_URL).toBe('redis://redis@localhost:6379')
   })
 
   afterAll(() => (process.env.NODE_ENV = EnvironmentType.TEST))
