@@ -8,7 +8,7 @@
     "build:clean": "rimraf ./dist",
     "build:dist": "tsc --build tsconfig.build.json",
     "build:copy": "cp .env ./dist",
-    "start": "set NODE_ENV=production&node ./dist/src/index.js",
+    "start": "set NODE_ENV=production&node ./dist/app/index.js",
     "dev": "set NODE_ENV=development&&tsnd -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify ./src",
     "test": "set NODE_ENV=test&&jest --i --no-cache --verbose --runInBand --bail",
     "prod": "yarn build&&yarn start",

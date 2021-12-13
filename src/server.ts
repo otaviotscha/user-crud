@@ -11,12 +11,12 @@ import { currentUserChecker } from '~/api/helpers/currentUser'
 /**
  * Loading controllers.
  */
-const controllersPath = path.resolve(__dirname, 'api', 'routes', '**', 'controller.ts')
+const controllersPath = path.resolve(__dirname, 'api', 'routes', '**', 'controller.{ts,js}')
 
 /**
  * Loading middlewares.
  */
-const middlewaresPath = path.resolve(__dirname, 'api', 'middlewares', '**', '*.ts')
+const middlewaresPath = path.resolve(__dirname, 'api', 'middlewares', '**', '*.{ts,js}')
 
 /**
  * Server options.
