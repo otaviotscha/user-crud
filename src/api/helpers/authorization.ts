@@ -17,6 +17,7 @@ export const authorizationChecker = async (action: Action): Promise<boolean> => 
     /**
      * Checking if user got from token is already logged in.
      */
+    logger.info('Checking if user is logged in')
     const alreadyLoggedIn = await redisClient.isUserLoggedIn(decodedToken.sub)
     if (!alreadyLoggedIn) throw new UnauthorizedError('User is not logged in')
 

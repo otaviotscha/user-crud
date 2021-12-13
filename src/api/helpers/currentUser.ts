@@ -13,8 +13,12 @@ export const currentUserChecker = async (action: Action): Promise<UserInfo> => {
   try {
     logger.info('=== CurrentUser:checker ===')
 
+    /**
+     * JWT token decoded from header.
+     */
     const decodedToken = await getDecodedToken(action)
 
+    logger.info(`Returning user id "${decodedToken.sub}"`)
     return { id: decodedToken.sub }
   } catch (error) {
     throw handleThrownError

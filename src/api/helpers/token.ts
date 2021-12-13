@@ -15,9 +15,10 @@ import { JWTToken } from './@types/token'
  */
 export const getDecodedToken = async (action: Action): Promise<JWTToken> => {
   try {
-    logger.info('=== /Token:getDecodedToken===')
+    logger.info('=== Token:getDecodedToken===')
 
     const token = await getToken(action)
+
     return decodeToken(token)
   } catch (error) {
     throw handleThrownError(error)
@@ -30,9 +31,13 @@ export const getDecodedToken = async (action: Action): Promise<JWTToken> => {
  * Gets token from authorization header and confirms it is a valid token.
  */
 const getToken = async (action: Action): Promise<string> => {
+  logger.info('Getting token from header')
   const token = `${action.request.headers['authorization']}`
   if (!token) throw new UnauthorizedError('Missing authorization header')
+  logger.info(`Found "${token}" token form header`)
+
   verify(token, TOKEN_SECRET)
+  logger.info(`Token "${token}" successfully verified`)
   return token
 }
 
@@ -40,8 +45,10 @@ const getToken = async (action: Action): Promise<string> => {
  * Decodes a valid token confirming that iat, exp and sub claims are present.
  */
 const decodeToken = async (token: string): Promise<JWTToken> => {
+  logger.info(`Decoding token "${token}"`)
   const decodedToken = decode(token, { json: true })
   if (!decodedToken) throw new UnauthorizedError('Failed to decode token')
+  logger.info(`Token ${token} successfully decoded`)
 
   /**
    * Mandatory claims.
