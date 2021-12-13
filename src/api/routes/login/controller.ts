@@ -4,7 +4,7 @@ import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi'
 /**
  * Types.
  */
-import { LoginBody, LoginResponse } from './@types/login'
+import { LoginRequest, LoginResponse } from './@types/login'
 
 /**
  * Services.
@@ -21,7 +21,7 @@ export class LoginController {
   @ResponseSchema(LoginResponse)
   @HttpCode(200)
   @OnUndefined(400)
-  post(@Body() login: LoginBody) {
+  post(@Body() login: LoginRequest) {
     return loginService.login(login)
   }
 }

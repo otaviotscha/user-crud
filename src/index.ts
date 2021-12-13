@@ -2,8 +2,8 @@ import './config/aliases'
 import './config/env'
 
 import { server } from '~/server'
-import { logger } from './common/logger'
-import { PORT } from './config/env'
+import { logger } from '~/common/logger'
+import { PORT } from '~/config/env'
 
 /**
  * Connecting to database and starting server.

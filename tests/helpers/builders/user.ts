@@ -1,4 +1,5 @@
 import { prisma } from '~/common/database'
+import { hashPassword } from '~/api/helpers/password'
 
 /**
  * Builder.
@@ -51,8 +52,16 @@ export class UserBuilder {
   /**
    * Saves freshly built user.
    */
-  save() {
+  async save() {
     const data = this.build()
-    return prisma.user.create({ data })
+    /**
+     * Hashes password to save user.
+     */
+    const hashedData = { ...data, password: hashPassword(data.password) }
+    const savedUser = await prisma.user.create({ data: hashedData })
+    /**
+     * Returns save user with raw password.
+     */
+    return { ...savedUser, password: data.password }
   }
 }

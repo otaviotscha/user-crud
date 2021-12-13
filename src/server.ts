@@ -4,9 +4,9 @@ import path from 'path'
 import { Express } from 'express'
 import { createExpressServer, RoutingControllersOptions } from 'routing-controllers'
 
-import { loadDocRoutes } from './api/helpers/openAPI'
-import { authorizationChecker } from './api/helpers/authorization'
-import { currentUserChecker } from './api/helpers/currentUser'
+import { loadDocRoutes } from '~/api/helpers/openAPI'
+import { authorizationChecker } from '~/api/helpers/authorization'
+import { currentUserChecker } from '~/api/helpers/currentUser'
 
 /**
  * Loading controllers.

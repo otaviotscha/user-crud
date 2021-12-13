@@ -11,6 +11,9 @@ export class ErrorHandler implements ExpressErrorMiddlewareInterface {
      */
     response.statusCode = error.httpCode ? error.httpCode : 500
 
+    /**
+     * Body.
+     */
     const responseJSONError = {
       code: response.statusCode,
       message: error.message,

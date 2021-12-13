@@ -29,7 +29,7 @@ describe('ROUTES: Login', () => {
     expect(response.body).toEqual(
       expect.objectContaining({
         token: expect.any(String),
-        expiresInSeconds: expect.any(String)
+        expiresInSeconds: expect.any(Number)
       })
     )
   })

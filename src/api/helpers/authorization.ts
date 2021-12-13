@@ -1,23 +1,29 @@
-import { Action, ForbiddenError, UnauthorizedError } from 'routing-controllers'
-import { JsonWebTokenError, verify } from 'jsonwebtoken'
+import { Action, UnauthorizedError } from 'routing-controllers'
 
-import { TOKEN_SECRET } from '~/config/env'
+import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
+import { redisClient } from '~/common/redis'
+import { getDecodedToken } from './token'
 
 export const authorizationChecker = async (action: Action): Promise<boolean> => {
   try {
     logger.info('=== Auth:checker ===')
 
-    const token = action.request.headers['authorization']
-    if (!token) throw new UnauthorizedError('Missing authorization header')
+    /**
+     * JWT token decoded from header.
+     */
+    const decodedToken = await getDecodedToken(action)
 
-    verify(token, TOKEN_SECRET)
+    /**
+     * Checking if user got from token is already logged in.
+     */
+    const alreadyLoggedIn = await redisClient.isUserLoggedIn(decodedToken.sub)
+    if (!alreadyLoggedIn) throw new UnauthorizedError('User is not logged in')
+
     logger.info('Success')
     return true
   } catch (error) {
-    logger.error((error as Error).message)
-    if (error instanceof JsonWebTokenError) throw new ForbiddenError(error.message)
-    throw error
+    throw handleThrownError(error)
   } finally {
     logger.info('=== /Auth:checker ===')
   }

@@ -27,5 +27,6 @@ export const {
   PORT = Default.PORT,
   NODE_ENV = EnvironmentType.DEV,
   TOKEN_SECRET = Default.TOKEN_SECRET,
-  TOKEN_EXPIRATION = Default.TOKEN_EXPIRATION
+  TOKEN_EXPIRATION = Default.TOKEN_EXPIRATION,
+  REDIS_URL = Default.REDIS_URL
 } = process.env

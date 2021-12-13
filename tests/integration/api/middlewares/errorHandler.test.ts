@@ -34,12 +34,12 @@ describe('MIDDLEWARES: Error Handler', () => {
     expect(response.body.message.length).toBeGreaterThan(0)
   })
 
-  test('should return status code 403 because of invalid token', async () => {
+  test('should return status code 401 because of invalid token', async () => {
     const response = await request(server).get(`/user`).set({
       authorization: randomToken
     })
-    expect(response.statusCode).toBe(403)
-    expect(response.body.code).toBe(403)
+    expect(response.statusCode).toBe(401)
+    expect(response.body.code).toBe(401)
     expect(response.body.message).toBeDefined()
     expect(response.body.message.length).toBeGreaterThan(0)
   })

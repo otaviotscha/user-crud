@@ -17,10 +17,10 @@ import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi'
 /**
  * Types.
  */
-import { CreateAddressBody, CreateAddressResponse } from './@types/createAddress'
+import { CreateAddressRequest, CreateAddressResponse } from './@types/createAddress'
 import { GetAddressQuery, GetAddressResponse } from './@types/getAddress'
-import { UpdateAddressBody, UpdateAddressResponse } from './@types/updateAddress'
-import { UserInfo } from '~/api/helpers/@types/userInfo'
+import { UpdateAddressRequest, UpdateAddressResponse } from './@types/updateAddress'
+import { UserInfo } from '~/api/helpers/@types/token'
 
 /**
  * Services.
@@ -58,7 +58,7 @@ export class AddressesController {
   @ResponseSchema(CreateAddressResponse)
   @HttpCode(201)
   @OnUndefined(400)
-  post(@CurrentUser() user: UserInfo, @Body() addresses: CreateAddressBody) {
+  post(@CurrentUser() user: UserInfo, @Body() addresses: CreateAddressRequest) {
     return addressService.create(user.id, addresses)
   }
 
@@ -68,7 +68,7 @@ export class AddressesController {
   @ResponseSchema(UpdateAddressResponse)
   @HttpCode(200)
   @OnUndefined(400)
-  put(@CurrentUser() user: UserInfo, @Param('id') addressId: string, @Body() data: UpdateAddressBody) {
+  put(@CurrentUser() user: UserInfo, @Param('id') addressId: string, @Body() data: UpdateAddressRequest) {
     return addressService.update(user.id, addressId, data)
   }
 

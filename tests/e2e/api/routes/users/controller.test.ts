@@ -152,7 +152,7 @@ describe('ROUTES: Users', () => {
     expect(countBeforeDelete).toBe(2)
     expect(countAfterDelete).toBe(1)
     expect(savedUsers).toHaveLength(1)
-    expect(savedUsers[0]).toEqual(userToKeep)
+    expect(savedUsers[0]).toEqual({ ...userToKeep, password: savedUsers[0].password })
   })
 
   test('should bring one user with two addresses', async () => {

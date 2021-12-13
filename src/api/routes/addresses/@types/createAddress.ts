@@ -1,6 +1,9 @@
 import { IsString, IsNotEmpty, IsNumber, IsPositive, IsUUID, IsDateString } from 'class-validator'
 
-export class CreateAddressBody {
+/**
+ * Request.
+ */
+export class CreateAddressRequest {
   @IsNumber()
   @IsPositive()
   number: number
@@ -14,6 +17,9 @@ export class CreateAddressBody {
   city: string
 }
 
+/**
+ * Response.
+ */
 export class CreateAddressResponse {
   @IsUUID()
   id: string

@@ -1,6 +1,9 @@
-import { IsJWT, IsAlphanumeric, IsAscii, Length, IsNumber, IsPositive, IsInt } from 'class-validator'
+import { IsJWT, IsAlphanumeric, IsAscii, Length, IsNumber, IsPositive, IsInt, IsNotEmpty } from 'class-validator'
 
-export class LoginBody {
+/**
+ * Request.
+ */
+export class LoginRequest {
   @IsAlphanumeric()
   username: string
 
@@ -9,6 +12,9 @@ export class LoginBody {
   password: string
 }
 
+/**
+ * Response.
+ */
 export class LoginResponse {
   @IsJWT()
   token: string
@@ -17,4 +23,12 @@ export class LoginResponse {
   @IsPositive()
   @IsInt()
   expiresInSeconds: number
+}
+
+/**
+ * Response when already logged in.
+ */
+export class AlreadyLoggedIn {
+  @IsNotEmpty()
+  message: string
 }

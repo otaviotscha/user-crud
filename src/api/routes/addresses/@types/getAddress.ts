@@ -1,5 +1,8 @@
 import { IsUUID, IsString, IsNotEmpty, IsNumber, IsPositive, IsDateString, IsOptional } from 'class-validator'
 
+/**
+ * Request Query.
+ */
 export class GetAddressQuery {
   @IsOptional()
   @IsUUID()
@@ -21,6 +24,9 @@ export class GetAddressQuery {
   city: string
 }
 
+/**
+ * Response.
+ */
 export class GetAddressResponse {
   @IsUUID()
   id: string

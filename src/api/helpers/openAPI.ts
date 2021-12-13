@@ -6,6 +6,9 @@ import { validationMetadatasToSchemas } from 'class-validator-jsonschema'
 
 import { serverOptions } from '~/server'
 
+/**
+ * Creates and loads "/docs" route.
+ */
 export const loadDocRoutes = (app: Express) => {
   const storage = getMetadataArgsStorage()
 

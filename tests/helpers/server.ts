@@ -1,6 +1,7 @@
 import { Server } from 'http'
 
 import { logger } from '~/common/logger'
+import { redisClient } from '~/common/redis'
 import { PORT } from '~/config/env'
 
 import { server as applicationServer } from '~/server'
@@ -22,5 +23,6 @@ export const startServer = async (): Promise<void> => {
  * Closes testing server.
  */
 export const closeServer = async (): Promise<void> => {
+  await redisClient.close()
   return new Promise(resolve => server.close(() => resolve()))
 }

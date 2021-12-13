@@ -4,7 +4,7 @@ import { prisma } from '~/common/database'
 import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
 
-import { CreateAddressBody } from './@types/createAddress'
+import { CreateAddressRequest } from './@types/createAddress'
 import { GetAddressQuery } from './@types/getAddress'
 
 /**
@@ -48,7 +48,7 @@ export const findOne = async (userId: string, addressId: string) => {
 /**
  * Creates a new address.
  */
-export const create = async (userId: string, data: CreateAddressBody) => {
+export const create = async (userId: string, data: CreateAddressRequest) => {
   try {
     logger.info('=== Address:create ===')
 
@@ -71,7 +71,7 @@ export const create = async (userId: string, data: CreateAddressBody) => {
 /**
  * Updates an existing address.
  */
-export const update = async (userId: string, addressId: string, data: CreateAddressBody) => {
+export const update = async (userId: string, addressId: string, data: CreateAddressRequest) => {
   try {
     logger.info('=== Address:update ===')
 

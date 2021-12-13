@@ -1,4 +1,5 @@
 import { NotFoundError } from 'routing-controllers'
+import { hashPassword } from '~/api/helpers/password'
 
 import { prisma } from '~/common/database'
 import { handleThrownError } from '~/common/helpers'
@@ -7,7 +8,7 @@ import { logger } from '~/common/logger'
 /**
  * Types.
  */
-import { CreateUserBody, UpdateUserBody } from './@types/user'
+import { CreateUserBody, CreateUserResponse, UpdateUserBody, UpdateUserResponse } from './@types/user'
 
 /**
  * Finds an user.
@@ -28,17 +29,18 @@ export const findOne = async (id: string) => {
 /**
  * Creates a new user.
  */
-export const create = async (data: CreateUserBody) => {
+export const create = async (data: CreateUserBody): Promise<CreateUserResponse> => {
   try {
     logger.info('=== User:create ===')
 
-    logger.info(`Creating user "${JSON.stringify(data)}"`)
+    logger.info(`Creating user`)
+    data.password = hashPassword(data.password)
     const { id, createdAt } = await prisma.user.create({
       data
     })
     logger.info(`User "${id}" was successfully created`)
 
-    return { id, createdAt }
+    return { id, createdAt: createdAt.toISOString() }
   } catch (error) {
     throw handleThrownError(error)
   } finally {
@@ -51,20 +53,26 @@ export const create = async (data: CreateUserBody) => {
 /**
  * Updates an existing user.
  */
-export const update = async (id: string, data: UpdateUserBody) => {
+export const update = async (id: string, data: UpdateUserBody): Promise<UpdateUserResponse> => {
   try {
     logger.info('=== User:update ===')
 
+    /**
+     * Checks if element really is in database to return the
+     * correct response (not found or continue to successful
+     * update).
+     */
     await findById(id)
 
     logger.info(`Updating user ${JSON.stringify({ id, ...data })}`)
+    if (data.password) data.password = hashPassword(data.password)
     const { updatedAt } = await prisma.user.update({
       where: { id },
-      data: data
+      data
     })
 
-    logger.info(`User ${id} successfully updated`)
-    return { id, updatedAt }
+    logger.info(`User "${id}" successfully updated`)
+    return { id, updatedAt: updatedAt.toISOString() }
   } catch (error) {
     throw handleThrownError(error)
   } finally {
@@ -73,7 +81,6 @@ export const update = async (id: string, data: UpdateUserBody) => {
     prisma.$disconnect()
   }
 }
-
 /**
  * Removes an user.
  */
