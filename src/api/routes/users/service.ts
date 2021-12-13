@@ -4,11 +4,13 @@ import { hashPassword } from '~/api/helpers/password'
 import { prisma } from '~/common/database'
 import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
+import { redisClient } from '~/common/redis'
 
 /**
  * Types.
  */
-import { CreateUserBody, CreateUserResponse, UpdateUserBody, UpdateUserResponse } from './@types/user'
+import { CreateUserRequest, CreateUserResponse } from './@types/createUser'
+import { UpdateUserRequest, UpdateUserResponse } from './@types/updateUser'
 
 /**
  * Finds an user.
@@ -29,7 +31,7 @@ export const findOne = async (id: string) => {
 /**
  * Creates a new user.
  */
-export const create = async (data: CreateUserBody): Promise<CreateUserResponse> => {
+export const create = async (data: CreateUserRequest): Promise<CreateUserResponse> => {
   try {
     logger.info('=== User:create ===')
 
@@ -53,7 +55,7 @@ export const create = async (data: CreateUserBody): Promise<CreateUserResponse> 
 /**
  * Updates an existing user.
  */
-export const update = async (id: string, data: UpdateUserBody): Promise<UpdateUserResponse> => {
+export const update = async (id: string, data: UpdateUserRequest): Promise<UpdateUserResponse> => {
   try {
     logger.info('=== User:update ===')
 
@@ -65,7 +67,15 @@ export const update = async (id: string, data: UpdateUserBody): Promise<UpdateUs
     await findById(id)
 
     logger.info(`Updating user ${JSON.stringify({ id, ...data })}`)
-    if (data.password) data.password = hashPassword(data.password)
+
+    /**
+     * Hashing password and removing it from Redis to force login.
+     */
+    if (data.password) {
+      data.password = hashPassword(data.password)
+      await redisClient.removeLoggedUserById(id)
+    }
+
     const { updatedAt } = await prisma.user.update({
       where: { id },
       data
@@ -105,7 +115,7 @@ export const remove = async (id: string) => {
 /**
  * Finds user by id.
  */
-export const findById = async (id: string) => {
+const findById = async (id: string) => {
   logger.info(`Searching user "${id}"`)
   const foundUser = await prisma.user.findFirst({
     where: { id },

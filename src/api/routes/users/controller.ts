@@ -4,8 +4,10 @@ import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi'
 /**
  * Types.
  */
-import { CreateUserBody, CreateUserResponse, GetUserResponse, UpdateUserBody, UpdateUserResponse } from './@types/user'
 import { UserInfo } from '~/api/helpers/@types/token'
+import { CreateUserRequest, CreateUserResponse } from './@types/createUser'
+import { GetUserResponse } from './@types/getUser'
+import { UpdateUserRequest, UpdateUserResponse } from './@types/updateUser'
 
 /**
  * Services.
@@ -32,7 +34,7 @@ export class UsersController {
   @ResponseSchema(CreateUserResponse)
   @HttpCode(201)
   @OnUndefined(400)
-  post(@Body() users: CreateUserBody) {
+  post(@Body() users: CreateUserRequest) {
     return userService.create(users)
   }
 
@@ -42,7 +44,7 @@ export class UsersController {
   @ResponseSchema(UpdateUserResponse)
   @HttpCode(200)
   @OnUndefined(400)
-  put(@CurrentUser() user: UserInfo, @Body() data: UpdateUserBody) {
+  put(@CurrentUser() user: UserInfo, @Body() data: UpdateUserRequest) {
     return userService.update(user.id, data)
   }
 

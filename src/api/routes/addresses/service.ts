@@ -118,7 +118,7 @@ export const remove = async (userId: string, addressId: string) => {
 /**
  * Finds address by id.
  */
-export const findById = async (userId: string, addressId: string) => {
+const findById = async (userId: string, addressId: string) => {
   logger.info(`Searching address "${addressId}"`)
   const foundAddress = await prisma.address.findFirst({
     where: { id: addressId }
