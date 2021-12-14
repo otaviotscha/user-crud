@@ -1,6 +1,9 @@
 import { decode, verify } from 'jsonwebtoken'
 import { Action, UnauthorizedError } from 'routing-controllers'
 
+/**
+ * Helpers / common.
+ */
 import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
 import { TOKEN_SECRET } from '~/config/env'

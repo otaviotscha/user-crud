@@ -1,4 +1,6 @@
-import { prisma } from '~/common/database'
+/**
+ * Helpers / common.
+ */
 import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
 import { redisClient } from '~/common/redis'

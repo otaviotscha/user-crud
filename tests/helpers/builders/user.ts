@@ -1,3 +1,6 @@
+/**
+ * Helpers / common.
+ */
 import { prisma } from '~/common/database'
 import { hashPassword } from '~/api/helpers/password'
 

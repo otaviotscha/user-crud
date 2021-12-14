@@ -1,14 +1,20 @@
 import { Action } from 'routing-controllers'
 
+/**
+ * Helpers / common
+ */
 import { logger } from '~/common/logger'
 import { handleThrownError } from '~/common/helpers'
-import { getDecodedToken } from './token'
+import { getDecodedToken } from '~/api/helpers/token'
 
 /**
  * Types.
  */
 import { UserInfo } from './@types/token'
 
+/**
+ * Gets user from token sub claim.
+ */
 export const currentUserChecker = async (action: Action): Promise<UserInfo> => {
   try {
     logger.info('=== CurrentUser:checker ===')

@@ -1,9 +1,15 @@
 import { ForbiddenError, NotFoundError } from 'routing-controllers'
 
+/**
+ * Helpers / common.
+ */
 import { prisma } from '~/common/database'
 import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
 
+/**
+ * Types.
+ */
 import { CreateAddressRequest } from './@types/createAddress'
 import { GetAddressQuery } from './@types/getAddress'
 

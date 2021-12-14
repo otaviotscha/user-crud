@@ -1,9 +1,12 @@
-import { isDevelopmentEnvironment, isProductionEnvironment, isTestEnvironment } from '~/config/env'
-
 /**
- * Helpers.
+ * Helpers / common.
  */
 import { startServer, closeServer } from 'tests/helpers/server'
+
+/**
+ * Environment.
+ */
+import { isDevelopmentEnvironment, isProductionEnvironment, isTestEnvironment } from '~/config/env'
 
 /**
  * Types.

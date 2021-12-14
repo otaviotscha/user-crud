@@ -1,5 +1,11 @@
+/**
+ * Entities.
+ */
 import { User } from '.prisma/client'
 
+/**
+ * Helpers / common.
+ */
 import { prisma } from '~/common/database'
 
 /**

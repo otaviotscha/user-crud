@@ -1,7 +1,13 @@
 import request from 'supertest'
 
+/**
+ * Helpers / common.
+ */
 import { startServer, closeServer, server } from 'tests/helpers/server'
 
+/**
+ * Test suite.
+ */
 describe('ROUTES: Health Check', () => {
   beforeAll(startServer)
 

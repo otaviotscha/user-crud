@@ -1,7 +1,7 @@
 import request from 'supertest'
 
 /**
- * Helpers.
+ * Helpers / common.
  */
 import { startServer, closeServer, server } from 'tests/helpers/server'
 import { cleanDatabase } from 'helpers/database'

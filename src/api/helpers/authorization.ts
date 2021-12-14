@@ -1,10 +1,16 @@
 import { Action, UnauthorizedError } from 'routing-controllers'
 
+/**
+ * Helpers / common.
+ */
 import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
 import { redisClient } from '~/common/redis'
-import { getDecodedToken } from './token'
+import { getDecodedToken } from '~/api/helpers/token'
 
+/**
+ * Checks token.
+ */
 export const authorizationChecker = async (action: Action): Promise<boolean> => {
   try {
     logger.info('=== Auth:checker ===')
@@ -15,7 +21,7 @@ export const authorizationChecker = async (action: Action): Promise<boolean> => 
     const decodedToken = await getDecodedToken(action)
 
     /**
-     * Checking if user got from token is already logged in.
+     * Checking if user from token is already logged in.
      */
     logger.info('Checking if user is logged in')
     const alreadyLoggedIn = await redisClient.isUserLoggedIn(decodedToken.sub)

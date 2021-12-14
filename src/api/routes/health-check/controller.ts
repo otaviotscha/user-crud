@@ -1,6 +1,9 @@
 import { Get, HttpCode, JsonController, OnUndefined } from 'routing-controllers'
 import { OpenAPI } from 'routing-controllers-openapi'
 
+/**
+ * Controller.
+ */
 @JsonController('/health-check')
 export class HealthCheckController {
   @Get()

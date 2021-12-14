@@ -1,9 +1,19 @@
 import { Server } from 'http'
 
+/**
+ * Helpers / common.
+ */
 import { logger } from '~/common/logger'
 import { redisClient } from '~/common/redis'
+
+/**
+ * Environment.
+ */
 import { PORT } from '~/config/env'
 
+/**
+ * Server.
+ */
 import { server as applicationServer } from '~/server'
 
 /**

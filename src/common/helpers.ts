@@ -1,7 +1,10 @@
 import { JsonWebTokenError } from 'jsonwebtoken'
 import { UnauthorizedError } from 'routing-controllers'
 
-import { logger } from './logger'
+/**
+ * Helpers / common.
+ */
+import { logger } from '~/common/logger'
 
 /**
  * Checks if structure is instance of Error.

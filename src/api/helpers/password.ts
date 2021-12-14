@@ -1,5 +1,8 @@
 import { hashSync, compareSync } from 'bcryptjs'
 
+/**
+ * Helpers / common.
+ */
 import { logger } from '~/common/logger'
 
 const saltRounds = 10

@@ -1,10 +1,13 @@
 import { NotFoundError } from 'routing-controllers'
-import { hashPassword } from '~/api/helpers/password'
 
+/**
+ * Helpers / common.
+ */
 import { prisma } from '~/common/database'
 import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
 import { redisClient } from '~/common/redis'
+import { hashPassword } from '~/api/helpers/password'
 
 /**
  * Types.

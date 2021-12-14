@@ -1,6 +1,9 @@
 import { NotFoundError, UnauthorizedError } from 'routing-controllers'
 import { sign } from 'jsonwebtoken'
 
+/**
+ * Helpers / common.
+ */
 import { prisma } from '~/common/database'
 import { handleThrownError } from '~/common/helpers'
 import { logger } from '~/common/logger'
@@ -8,7 +11,7 @@ import { redisClient } from '~/common/redis'
 import { comparePasswords } from '~/api/helpers/password'
 
 /**
- * Environment;
+ * Environment.
  */
 import { TOKEN_EXPIRATION, TOKEN_SECRET } from '~/config/env'
 

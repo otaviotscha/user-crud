@@ -1,6 +1,9 @@
 import { ExpressErrorMiddlewareInterface, Middleware } from 'routing-controllers'
 import { NextFunction, Request, Response } from 'express'
 
+/**
+ * Error handling middleware.
+ */
 @Middleware({ type: 'after' })
 export class ErrorHandler implements ExpressErrorMiddlewareInterface {
   // TODO: error type

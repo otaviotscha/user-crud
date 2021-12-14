@@ -1,12 +1,11 @@
 import request from 'supertest'
 
-import { prisma } from '~/common/database'
-
 /**
- * Helpers.
+ * Helpers / common.
  */
 import { cleanDatabase } from 'helpers/database'
 import { startServer, server, closeServer } from 'helpers/server'
+import { prisma } from '~/common/database'
 
 /**
  * Builders.

@@ -1,8 +1,22 @@
+/**
+ * Loading aliases and env variables.
+ */
 import './config/aliases'
 import './config/env'
 
+/**
+ * Server.
+ */
 import { server } from '~/server'
+
+/**
+ * Helpers / common.
+ */
 import { logger } from '~/common/logger'
+
+/**
+ * Environment.
+ */
 import { PORT } from '~/config/env'
 
 /**
