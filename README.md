@@ -30,6 +30,8 @@ Defaults:
 - `yarn prisma migrate dev` to generate database.
 - `yarn dev` to run app in development environment.
 - `yarn test` to run tests.
+- `yarn build` to build TypeScript to JavaScript.
+- `yarn prod` to run app in production mode.
 
 ## API Documentation
 
